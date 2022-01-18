@@ -1,0 +1,262 @@
+@using Microsoft.AspNetCore.Antiforgery
+@using Microsoft.AspNetCore.Mvc.Razor
+@model IEnumerable<InvoiceGenerator.Models.Item>
+
+@inject IAntiforgery Xsrf
+@{
+    ViewData["Title"] = "Inventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var AREA_NAME = RazorViewEngine.GetNormalizedRouteValue(ViewContext, "area");
+    var CONTROLLER_NAME = ViewContext.RouteData.Values["controller"].ToString();
+
+
+}
+
+
+@functions{
+
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+
+}
+
+@section HEAD{
+    <style>
+        .arrow,
+        .pagination-links,
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+
+        label {
+            font-size: 14px !important;
+        }
+        
+ 
+    </style>
+
+}
+
+<main id="main">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb rounded-0 bg-transparent">
+            <li class="breadcrumb-item">
+                <a asp-action="Index"> @Localizer[CONTROLLER_NAME]</a>
+            </li>
+        </ol>
+    </nav>
+
+
+    <div class="content-box bg-white card">
+        <div class=" title-bar d-flex justify-content-start align-items-center mx-0 px-0">
+            <a href='@Url.Action("Index")'>
+                @*<img src="~/icons/Back.png" />*@
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-arrows-rep" width="47" viewBox="0 0 47 47">
+                    <defs>
+                        <filter id="Ellipse_23" x="0" y="0" width="47" height="47" filterUnits="userSpaceOnUse">
+                            <feOffset dy="3" input="SourceAlpha"/>
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feFlood flood-opacity="0.161"/>
+                            <feComposite operator="in" in2="blur"/>
+                            <feComposite in="SourceGraphic"/>
+                        </filter>
+                    </defs>
+                    <g id="Group_455" data-name="Group 455" transform="translate(9 35.418) rotate(-90)">
+                        <g transform="matrix(0, 1, -1, 0, 35.42, -9)" filter="url(#Ellipse_23)">
+                            <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 35) rotate(-90)" stroke-width="2">
+                                <circle cx="14.5" cy="14.5" r="14.5" stroke="none"/>
+                                <circle cx="14.5" cy="14.5" r="13.5" fill="none"/>
+                            </g>
+                        </g>
+                        <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.97) rotate(180)">
+                            <path id="Path_22" data-name="Path 22" d="M0,6.349,6.419,0,12.5,6.349" transform="translate(12.5 6.349) rotate(180)" stroke-width="2"/>
+                        </g>
+                    </g>
+                </svg>
+            </a>
+            <h4 class="text-main mx-3">@Localizer["Back"] </h4>
+        </div>
+        <div class="barcode-block">
+            <div class="tools-bar">
+                <div class="row align-items-start">
+                    <div class="col-12">
+                        <h5 class="text-muted text-dark d-flex justify-content-start">
+                            <span>@Localizer["Total Item"]:</span>
+                            <span id="totalItems">
+                                <b>@Model?.Count()</b>
+                            </span>
+                        </h5>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12 col-sm-3">
+                        @* <div class="form-group m-0" id="search-by-group"> *@
+                        @*     <input id="search-by" type="text" class="form-control search-bar-ltr" name="search-by" value="" placeholder="@Localizer["Search"]"> *@
+                        @* </div> *@
+                    </div>
+                    <div class="col-12 col-sm-9 d-flex justify-content-end">
+                        <div class="d-flex align-items-center">
+                            <input type="checkbox" id="selectAll"/>
+                            <label for="selectAll" class="mx-2 my-0">@Localizer["Select All"]</label>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="printBarcode">
+                            @Localizer["Print"]
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="errorBarcode" class="text-danger"> </div>
+            <div class="table-responsive">
+                <table id="InventoryTable" width="100%" class=" dataTable display table table-bordered table-striped">
+                    <thead class="bg-submain text-light">
+                        <tr>
+                            <th></th>
+                            <th>@Localizer["Item ID"]</th>
+                            <th>@Localizer["Name"]</th>
+                            <th>@Localizer["Quantity"]</th>
+                            <th>@Localizer["No. Of Prints"]</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" ItemQuantity="@item.Quantity" ItemID="@item.ItemID" barcode="@item.SupplierBarCode" ItemName="@item.Name">
+                            </td>
+                            <td>@item.ItemID</td>
+                            <td>@item.Name</td>
+                            <td>@item.Quantity</td>
+                            <td><input type='number' class='form-control' style='max-width: 50px' /></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal fade" id="barcodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">@Localizer["Barcodes"]</h5>
+                     <button type="button" class="close" data-toggle="modal" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true" style="font-size: 18px">&times;</span>
+                            </button>
+                </div>
+                @* DO NOT REMOVE THE INLINE STYLING THEY ARE IMPORTANT FOR PRINTING BARCODES *@
+                <div class="modal-body" style="display:flex;flex-wrap:wrap" id="barcodeContainer">
+
+                </div>
+                <div class="d-flex justify-content-end mx-3 my-3 align-items-center">
+                    <button class="btn btn-primary" id="printBarCodeModal">
+                        @Localizer["Print"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    let itemsData = [];
+    $(document).on('change', '#selectAll', function () {
+        const isChecked = $(this).is(':checked');
+        $("#InventoryTable input[type=checkbox]").each(function () {
+            if(isChecked) {
+                $(this).prop("checked", true);
+                let input = $(this).closest("tr").find('input[type=number]');
+                if (!input.val().length){
+                    input.val(1)    
+                }
+            }
+            else $(this).prop("checked", false)
+        })
+    });
+     $(document).on('change', 'input[type=checkbox]:not(#selectAll)', function () {
+            const isChecked = $(this).is(':checked');
+                if(isChecked) {
+                    $(this).prop("checked", true);
+                    let input = $(this).closest("tr").find('input[type=number]');
+                    if (!input.val().length){
+                        input.val(1)    
+                    }
+                }
+                else $(this).prop("checked", false)
+        });
+    $(document).on('click', '#printBarCodeModal', function () {
+        $("#barcodeModal").modal('hide')
+        PrintComponent(document.getElementById('barcodeContainer').outerHTML)
+
+    })
+    $(document).on('keyup', '#search-by', function () {
+        printTable(itemsData)
+    })
+    $(document).on('click', '#printBarcode', function () {
+        let index;
+        let haveBarcode = false;
+        let hasZeroQuantity = false;
+        $('#barcodeContainer').html('')
+        $("#InventoryTable input[type=checkbox]:checked").each(function () {
+            const quantity =$(this).closest('tr').find('input.form-control').val();
+            let name = $(this).attr('ItemName');
+            const ItemID = $(this).attr('ItemID');
+            const barcode = $(this).attr('barcode');
+                if (quantity < 1){
+                     hasZeroQuantity = true;   
+                }
+                
+            for (index = 0; index < quantity; index++) {
+                haveBarcode = true;
+                $('#barcodeContainer').append(`<div class="barcode-container mx-4"><svg id='item-id-${ItemID}'></svg><p style="text-align:center;margin-bottom: 0">${name}</p></div>`)
+                JsBarcode(`#item-id-${ItemID}`, ItemID, {
+                    width: 1,
+                    height: 40,
+                    text: ItemID
+                });
+                // if (barcode.length > 0 && barcode != "null") {
+                //
+                //     $('#barcodeContainer').append(`<div class="barcode-container"><svg id='item-${ItemID}'></svg><p style="text-align:center">${name}</p></div>`)
+                //     JsBarcode(`#item-${ItemID}`,barcode, {
+                //         width: 1,
+                //         height: 40,
+                //         text: barcode
+                //     });
+                // }
+            }
+            $("#barcodeContainer").append('<div style="width:100%"></div>')
+        })
+        if (hasZeroQuantity){
+            $('#errorBarcode').text("Please Add quantity for all checked items");
+            setTimeout(() => {
+                $("#errorBarcode").text('')
+            },5000)
+            return;
+        }
+        if (haveBarcode)
+            $("#barcodeModal").modal('show')
+        else {
+            $('#errorBarcode').text("Please select an Item or type quantity");
+            setTimeout(() => {
+                $("#errorBarcode").text('')
+            },3000)
+        }
+    })
+
+    
+$(document).on('keydown','input[type=number]',function(e){
+        if (e.shiftKey === true ) {
+            return e.which === 9;
+            
+        }
+        if (e.which > 57 && !(e.which>=96 && e.which<=105)) {
+            return false;
+        }
+        return e.which!==32;
+});
+
+</script>

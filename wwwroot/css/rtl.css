@@ -1,0 +1,181 @@
+﻿.icons {
+    left: 0;
+    right: auto;
+    border-left: none;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+  /*  .icons:hover {
+        border-right: 2px solid ;
+    }*/
+
+    .icons .icon:first-child {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 10px;
+    }
+
+    .icons .icon:last-child {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 10px;
+    }
+
+.icon {
+    display: flex;
+    align-items: center;
+}
+
+    .icon img {
+        margin-left: auto
+    }
+
+.search-by-group-ltr {
+    margin-right: auto;
+}
+.col{
+}
+.col.text-start{
+    text-align:right !important;
+}
+.search-bar-ltr:not(.returns) {
+    background: url("../icons/search.png") top left no-repeat !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+    padding-left: 25px !important;
+    background-position-y: center !important;
+    background-position-x: 5px !important;
+}
+
+.custom-select {
+    background-position-x: 9%;
+    padding-right: 10px;
+}
+
+.form-group > label {
+    display: block;
+    text-align: start ;
+}
+
+.form-group input-group + label {
+    display: block;
+    text-align: start !important;
+}
+
+img:not(.chart-icon,.logo img) {
+    transform: scaleX(-1);
+}
+#SuccessModal img{
+    transform:scaleX(1)
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-align: right !important;
+}
+
+.dashobard-graph-card h4, .dashboard-card h4 {
+    text-align: right !important;
+}
+
+.breadcrumb::before {
+    top: 50%;
+    right: 0px;
+    content: "";
+    position: absolute;
+    background: #5068B8;
+    border-radius: 3px;
+    width: 6px;
+    height: 6px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    margin-right: -14px;
+}
+
+.info-bar .slider .value {
+    top: 0;
+    RIGHT: 0;
+    bottom: 0;
+    background: #5068B8;
+    position: absolute;
+    border-radius: 3px 0 0 3px;
+}
+
+.info-bar .progress-value {
+    bottom: 0;
+    RIGHT: 100%;
+    background: #000;
+    position: absolute;
+    width: 2px;
+    height: 15px;
+}
+
+label:not(#paymentSection,.RecieveAsClass,.text-center,.text-left,.text-right) {
+    display: block;
+    text-align: right;
+}
+
+#paymentTypeSelection {
+    display: flex;
+    align-items: center;
+}
+
+    #paymentmethods label, #paymentTypeSelection label {
+        margin: auto 5px;
+        text-align:right;
+    }
+
+p:not(.text-right,.profile-header-box ) {
+    text-align: right;
+}
+#SuccessModal p{
+    text-align:center !important;
+}
+.paymentmethods p {
+    text-align: right;
+}
+
+.invoice table tr th:first-child,
+.invoice table tr td:first-child {
+    border-right-color: #b7b7b7;
+}
+
+.invoice table tr th:last-child,
+.invoice table tr td:last-child {
+    border-left-color: #b7b7b7;
+}
+
+#Main th:first-child, #Main td:first-child {
+    border-right: 1px solid lightgray;
+    border-left: none;
+}
+
+#Main th:last-child, #Main td:last-child {
+    border-left: 1px solid lightgray;
+    border-right: none;
+}
+
+.ml-auto {
+    margin-right: auto !important; /* In RTL direction will be reversed */
+}
+
+.float-right {
+    float: left !important;
+}
+
+.input-group-sm > .custom-select {
+    padding: 0.25rem 1.5rem;
+}
+
+.field-icon {
+    float: left !important; 
+    margin-left: 7px !important;
+}
+label:not(#paymentSection,.RecieveAsClass,.text-center,.text-left,.text-right) {
+    display: block;
+    text-align: right;
+}

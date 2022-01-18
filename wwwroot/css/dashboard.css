@@ -1,0 +1,302 @@
+#dashboard-tabs {
+    padding: 5px;
+    width: 35%;
+}
+
+@media only screen and (min-width: 400px) and (max-width: 959px) {
+    #dashboard-tabs {
+        width: 75%;
+    }
+}
+
+@media only screen and (min-width: 100px) and (max-width: 399px) {
+    #dashboard-tabs {
+        width: 100%;
+    }
+}
+@media (max-width:1300px){
+    #dashboard-tabs {
+        padding: 5px;
+        width: 45%;
+    }
+}
+
+#dashboard-tabs ul {
+    list-style: none;
+    display: flex;
+    margin: auto 0px;
+    text-align: center;
+    padding-left: 0px;
+}
+
+#dashboard-tabs ul li {
+    padding: 5px;
+}
+
+#dashboard-tabs ul li:not(:last-child) {
+    border-right: 1px solid #707070;
+}
+
+#dashboard-tabs ul li.active, #dashboard-tabs ul li:hover {
+    background-color: #5068B8;
+    box-shadow: 0px 3px 6px #00000029;
+}
+
+#dashboard-tabs ul li.active a, #dashboard-tabs ul li:hover a {
+    color: white !important;
+}
+
+#dashboard-tabs ul li a {
+    text-decoration: none;
+}
+
+#dashboard-tabs ul li a:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.dashobard-graph-card {
+    max-height: 123px;
+}
+
+@media (max-width: 1966px) {
+    .dashobard-graph-card h4 {
+        font-size: 1rem;
+    }
+    .dashobard-graph-card .col-4 {
+        padding: 0;
+    }
+    #dashboard-tabs{
+        width: 30%;
+    }
+}
+
+
+.dashboard-card {
+    min-height: 167px;
+    margin-bottom: 20px;
+   
+}
+
+.dashboard-card .card-header {
+    padding: 5px;
+    font-size: 18px;
+    background-color: white;
+}
+
+.dashboard-card .card-body {
+    padding: 5px;
+}
+
+.dashboard-card #PerformanceBy {
+    display: inline-flex;
+    background-color: white;
+    border: 1px solid #f2f2f2;
+}
+
+.dashboard-card #PerformanceBy #pills-saleman-tab, .dashboard-card #PerformanceBy #pills-solditem-tab {
+    min-width: 86px;
+    min-height: 27px;
+    background-color: white !important;
+    color: #bebfbc;
+    margin: 5px;
+    border-radius: 4px;
+}
+
+.dashboard-card #PerformanceBy #pills-saleman-tab.active, .dashboard-card #PerformanceBy #pills-solditem-tab.active, .dashboard-card #PerformanceBy #pills-saleman-tab:hover, .dashboard-card #PerformanceBy #pills-solditem-tab:hover {
+   
+    background-color: #5068B8 !important;
+    color: white;
+}
+
+.dashboard-card p {
+    margin: 4px 8px;
+    font-size: 15px;
+}
+
+.scroll-custom-table {
+    overflow: hidden;
+}
+
+.scroll-custom-table .table-head .row, .scroll-custom-table .table-body .row {
+    margin: 0;
+}
+
+.scroll-custom-table .table-head .col, .scroll-custom-table .table-body .col {
+    color: #000;
+    padding: 0 10px 5px 10px;
+    text-transform: capitalize;
+    font: 700 12px/14px "Open Sans", sans-serif;
+}
+
+.scroll-custom-table .table-head .col:last-child, .scroll-custom-table .table-body .col:last-child {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 10%;
+    flex: 0 0 10%;
+    max-width: 10%;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+.scroll-custom-table .table-head {
+    padding: 0 10px 0 0;
+}
+
+@media (max-width: 991px) {
+    .scroll-custom-table .table-head .col {
+        font-size: 9px;
+    }
+}
+
+.scroll-custom-table .table-body .row {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 10px 5px;
+}
+
+.scroll-custom-table .table-body .row:not(:first-child), .customer-table .table-body .row:not(:first-child) {
+    margin: 10px 0 0;
+}
+
+.scroll-custom-table .table-body .col, .customer-table .table-body .col {
+    font-weight: 400;
+    padding: 6px 10px 5px 10px;
+}
+
+@media (max-width: 991px) {
+    .scroll-custom-table .table-body .col, .customer-table .table-body .col {
+        padding: 5px;
+    }
+}
+
+.scroll-custom-table .table-head .col, .scroll-custom-table .table-body .text {
+    color: #fff;
+    margin-top: 11px;
+}
+
+.scroll-custom-table .table-body .row:nth-child(even) {
+    background-color: #fbfbfb;
+}
+
+.scroll-custom-table .table-head {
+    border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 10px;
+}
+
+.timeSelect {
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 100px;
+    box-shadow: none;
+    border: 1px solid #5068B8;
+    border-radius: 5px;
+    height: 90%;
+    margin: auto 0px;
+    color: #5068B8;
+    font-size: 13px;
+}
+
+.timeSelect::-ms-expand {
+    display: none;
+}
+
+.delivery-card {
+    display: -webkit-inline-flex;
+    display: -moz-inline-box;
+    justify-content: space-between;
+    background-color: white;
+    border-bottom: none;
+}
+
+.delivery-summary-card {
+    border: 1px solid #CFCFCF;
+    padding: 5px 0px;
+}
+
+.delivery-summary-card .card-body {
+    padding: 7px;
+}
+
+.delivery-summary-card .card-body p {
+    margin: 0px;
+    color: #5068B8;
+}
+
+.delivery-summary-card .card-body p:first-child {
+    padding: 4px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.delivery-summary-card .card-body p:last-child {
+    font-size: 22px;
+}
+
+.dot-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: #ACF653;
+    display: inline-block;
+}
+
+.dot-icon-Available {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: #ACF653;
+    display: inline-block;
+}
+
+.dot-icon-Busy {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: #F3D22C;
+    display: inline-block;
+}
+
+.dot-icon-Unavailable {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: #F65353;
+    display: inline-block;
+}
+
+.location {
+    color: #5068B8;
+    font-size: 13px;
+}
+
+.location a:hover {
+    text-decoration: none;
+    color: #5068B8;
+}
+.performance-section{
+    display:flex;
+    justify-content:space-between;
+    align-items:start;
+    margin:auto 10px;
+    width:100%;
+    max-width:75%;
+}
+    .performance-section > div {
+        width: 100%;
+        margin:auto 10px auto 10px;
+    }
+@media (max-width:1400px){
+    .performance-section{
+        flex-direction:column;
+        max-width:100%;
+    }
+        .performance-section > div {
+            width: 100%;
+            margin: auto 10px 10px 10px;
+        }
+}

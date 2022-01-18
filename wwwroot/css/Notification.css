@@ -1,0 +1,31 @@
+﻿.circle {
+    background: white;
+    margin: -17px 0px 0px 0px;
+    display: block;
+    position: absolute;
+    background: #4B652C;
+    width: 10px;
+    border-radius: 20px !important;
+    height: 10px;
+    right: 2px;
+  
+    border-radius: 50%;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    z-index: 1;
+    top: 20px;
+
+}
+
+
+.count {
+    color: #FFF;
+    font-size: 10px;
+    font-weight: normal;
+    padding: 1px 1px 1px 1px;
+    margin: 92px 3px 17px 3px;
+}
+
+
+
+

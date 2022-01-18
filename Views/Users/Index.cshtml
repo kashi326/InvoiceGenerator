@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "Users";
+}
+<main id="main">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb rounded-0 bg-transparent font-1">
+            <li class="breadcrumb-item active" aria-current="page">@Localizer["Users"]</li>
+        </ol>
+    </nav>
+    <div class="content-box bg-white card">
+        <div class="title-bar d-flex align-items-center">
+            <h2 class="text-main">@Localizer["Users"]</h2>
+        </div>
+
+        <!--Error messages section  -->
+        <div asp-validation-summary="All" id="errorMessage"></div>
+        <!-- End error message -->
+        <div class="row mt-1">
+            <div class="col-12 d-flex justify-content-start">
+                <h6 class="text-dark d-flex "><span class="text-muted">@Localizer["Total Users"]:</span> <strong>@Model.Count()</strong></h6>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-12 d-flex justify-content-end">
+                    <a class="btn btn-primary" asp-action="Create">
+                        @Localizer["Create New User"] <span style="font-weight: bolder;">+</span>
+                    </a>
+
+
+            </div>
+        </div>
+
+        <div class="mt-2 w-100 users-section">
+            <div class="card users-list-card p-0">
+                <div class="card-body nicescroll-box p-2">
+                    <div class="row wrap m-auto" style="width: 100%; overflow:hidden;">
+                        @foreach (var user in Model)
+                        {
+
+                            <div class="col-12 col-sm-6 col-lg-3 mb-3 mt-1">
+                                <div class="card user-card">
+                                    <div class="card-header user-card-header d-flex justify-content-between">
+                                        <p>
+                                            <span class="text-main ml-1 font-3 font-weight-semibold">
+                                                @Html.DisplayFor(x => user.UserName)
+                                            </span>
+                                        </p>
+                                        <span class="actions">
+                                            <a href="@Url.Action("Delete",new { id = user.Id })" class="DeleteBtn text-decoration-none">
+                                                <input value="@user.Id" hidden />
+                                                <img src="~/icons/delete.svg" width="14" height="14" alt="">
+                                            </a>
+                                            <a href='@Url.Action("ChangePassword")/@user.Id'>
+                                                @*<img src="~/icons/edit-icon.svg" width="14" height="14">*@
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-edit" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 42 42"><defs><filter id="a" x="0" y="0" width="42" height="42" filterUnits="userSpaceOnUse"><feOffset dy="3" input="SourceAlpha" /><feGaussianBlur stdDeviation="3" result="b" /><feFlood flood-color="#5068B8" flood-opacity="0.161" /><feComposite operator="in" in2="b" /><feComposite in="SourceGraphic" /></filter></defs><g transform="translate(9 6)"><g class="c" transform="matrix(1, 0, 0, 1, -9, -6)"><circle class="a" cx="12" cy="12" r="12" transform="translate(9 6)" /></g><path class="b" d="M-4358.714-948a1.286,1.286,0,0,1-1.286-1.286v-8.571a1.286,1.286,0,0,1,1.286-1.286h5.143a.428.428,0,0,1,.428.428.428.428,0,0,1-.428.429h-5.143a.429.429,0,0,0-.429.429v8.571a.429.429,0,0,0,.429.429H-4351a.429.429,0,0,0,.429-.429v-4.286a.428.428,0,0,1,.428-.429.429.429,0,0,1,.429.429v4.286A1.286,1.286,0,0,1-4351-948Zm1.579-2.593a.429.429,0,0,1-.271-.542l.857-2.571a.437.437,0,0,1,.1-.168l5.645-5.645a1.629,1.629,0,0,1,1.16-.481,1.641,1.641,0,0,1,1.16.481,1.641,1.641,0,0,1,0,2.32l-5.645,5.645a.427.427,0,0,1-.168.1l-2.571.857a.44.44,0,0,1-.136.022A.431.431,0,0,1-4357.135-950.594Zm6.94-8.318-5.574,5.571-.554,1.662,1.665-.556,5.571-5.571a.779.779,0,0,0,.229-.554.781.781,0,0,0-.229-.551.783.783,0,0,0-.555-.23A.782.782,0,0,0-4350.195-958.912Z" transform="translate(4366 966)" /></g></svg>
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <hr class="m-0">
+                                    <div class="card-body user-card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6 text-start">
+                                                <p class="text-muted mb-0">@Localizer["User Name"]</p>
+                                                <p>@Html.DisplayFor(x => user.UserName)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

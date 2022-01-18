@@ -1,0 +1,496 @@
+﻿@model InvoiceGenerator.Models.PurchaseInvoice
+@using Microsoft.EntityFrameworkCore;
+@inject InvoiceGenerator.Data.ApplicationDbContext context
+@{
+    var aboutUs = await context.AboutUs.FirstOrDefaultAsync();
+    Layout = "_PrintTemplateLayout";
+
+}
+
+@section Style{
+    <style>
+        body {
+            padding-bottom: 100px;
+            width: 290mm;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        table tr td,
+        table tr th {
+            border: 1px solid #000000;
+            border-collapse: collapse;
+            padding: 5px 8px;
+        }
+
+        table {
+            width: 100%;
+            border: 1px solid #000000;
+            border-collapse: collapse;
+        }
+
+        .print-wrapper {
+            padding: 10px 30px;
+            border: 1px solid white;
+            box-shadow: 4px 2px 5px 1px rgba(235, 225, 225, 0.49);
+            min-height: 300mm;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            height: 150px;
+            margin-bottom: 50px;
+        }
+
+            .header .header-details p {
+                margin: 0;
+                font-size: 12px;
+                margin-bottom: 1px;
+            }
+
+            .header .header-details h1 {
+                margin: 0;
+                color: #81BA5D;
+                font-size: 24px;
+                font-weight: 500
+            }
+
+            .header .header-details-ar h1 {
+                font-size: 30px !important;
+            }
+
+            .header .header-details-ar p {
+                font-size: 15px !important;
+            }
+
+
+        .invoice-details-header {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            align-items: center;
+        }
+
+            .invoice-details-header p {
+                margin: 0;
+                font-size: 14px;
+            }
+
+            .invoice-details-header h1 {
+                font-size: 24px;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            .invoice-details-header h3 {
+                font-size: 16px;
+                font-weight: 500;
+                margin: 0;
+            }
+
+
+        .invoice-details .date {
+            margin-top: 20px;
+        }
+
+        .invoice-details .date {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .invoice-details {
+            width: 100%;
+        }
+
+            .invoice-details table tr td:nth-child(1) {
+                font-weight: 500;
+            }
+
+        .line-items {
+            margin-top: 50px;
+            color: #2B2C3A;
+        }
+
+            .line-items .line-items-header {
+                background: #969696;
+                height: 40px;
+                display: flex;
+                justify-content: space-between;
+                line-height: 40px;
+                padding: 0 15px;
+            }
+
+            .line-items table {
+                width: 100%;
+                font-size: 14px;
+                text-align: left;
+            }
+
+            .line-items th {
+                background: #5C5C5C;
+                color: #ffffff;
+                font-weight: 500;
+            }
+
+        .summary {
+            font-size: 14px;
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-top: 50px;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .summary .list {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .summary .divider-right {
+            border-bottom: 2px solid #A7A9AC;
+            text-align: center;
+            flex: 1;
+        }
+
+        .summary .list-value {
+            border-bottom: 2px solid #A7A9AC;
+            text-align: center;
+            flex: 1;
+        }
+
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .invoice-details table tr td:nth-child(1) {
+            font-weight: 500;
+        }
+
+        .invoice-details table tr td,
+        .invoice-details table tr th {
+            border: 0;
+            border-right: 2px solid #B7B9BC;
+            border-bottom: 2px solid #B7B9BC;
+            border-collapse: collapse;
+        }
+
+            .invoice-details table tr td:last-child,
+            .invoice-details table tr th:last-child {
+                border-right: 0 !important;
+            }
+
+        .invoice-details table tr:last-child td,
+        .invoice-details table tr:last-child th {
+            border-bottom: 0 !important;
+        }
+
+        .invoice-details table {
+            width: 100%;
+            border: 2px solid #100708;
+            border-collapse: collapse;
+        }
+
+
+        .seller-buyer-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 80px;
+        }
+
+        .sb-details-container {
+            width: 350px;
+            height: 200px;
+            border: 1px solid #100708;
+            padding: 15px;
+        }
+
+            .sb-details-container p {
+                margin: 0;
+                font-size: 14px;
+            }
+    </style>
+}
+
+<div class="invoice-details-header">
+    <div style="width: 33%;text-align:left">
+        <div>
+            <p>Invoice Issue Date: @Model.IssuedDate</p>
+            <p>Supply Date: Not confirmed</p>
+            <p>Created by: @Model.CreatedBy</p>
+        </div>
+    </div>
+    <div style="width: 33%; margin-top: -25px">
+        <h1>
+            Purchase Invoice
+        </h1>
+        <h3>
+            @*Invoice Reference Number*@
+            @Model.InvoiceID
+        </h3>
+    </div>
+
+    <div dir="rtl" style="width: 33%;text-align:right">
+        <p>تاريخ إصدار الفاتورة :@Model.IssuedDate</p>
+        <p>
+            <span>
+                التوريد ت
+            </span>
+            <span>:Not confirmed </span>
+        </p>
+        <p>انشأ من قبل : @Model.CreatedBy</p>
+    </div>
+</div>
+
+<!-- @*    seller-buyer details  *@ -->
+
+<div class="seller-buyer-details">
+    <div>
+        <span style="display: block;">
+            تعريف البائع
+        </span>
+        <span style="display: inline-block;margin-bottom: 20px;font-weight: 600;">Seller’s Identification</span>
+
+        <div class="sb-details-container">
+            <div style="margin-bottom: 10px;">
+                <p>
+                    @Model.SupplierName
+                </p>
+                <p>@Model.SupplierName</p>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <p>ساحة اب ، التموين ، أبوت آباد</p>
+                <p>
+                    @Model.SupplierAddress
+                </p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <p>ضريبة القيمة المضافة #</p>
+                    <p style="font-weight: 600;">VAT #</p>
+                    <p>@Model.SupplierVATNumber</p>
+                </div>
+                <div>
+                    <p>ضريبة القيمة المضافة للمجموعة #</p>
+                    <p style="font-weight: 600;">Group VAT #</p>
+                    <p>no filed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div>
+        <span style="display: block;">تعريف المشتري</span> <span style="display: inline-block;margin-bottom: 20px;">
+            Buyer’s
+            Identification
+        </span>
+        <div class="sb-details-container">
+            <div style="margin-bottom: 10px;">
+                <p>
+                    @aboutUs.Name
+                </p>
+                <p>  @aboutUs.Name</p>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <p>@aboutUs.StreetNameArabic, @aboutUs.CityArabic, @aboutUs.DistrictArabic</p>
+                <p>
+                    @aboutUs.StreetName, @aboutUs.City,@aboutUs.District
+                </p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <p>ضريبة القيمة المضافة #</p>
+                    <p style="font-weight: 600;">VAT #</p>
+                    <p>@aboutUs.VATNumber</p>
+                </div>
+                <div>
+                    <p>ضريبة القيمة المضافة للمجموعة</p>
+                    <p style="font-weight: 600;">Group VAT #</p>
+                    <p>@aboutUs.GroupVatNumber</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- @* line items *@ -->
+
+<div class="line-items">
+    <div class=" line-items-header">
+        <div style="font-weight: 500;">Line Items</div>
+        <div>البنود</div>
+    </div>
+    <table>
+        <tr>
+            <th>
+                <p>بضائع</p>
+                <p>Goods</p>
+            </th>
+            <th>
+                <p>
+                    سعر الوحدة
+                </p>
+                <p>
+                    Unit Price
+                </p>
+            </th>
+            <th>
+                <p>لمية</p>
+                <p>Quantity</p>
+            </th>
+            <th>
+                <p>لمية</p>
+                <p>Discount %</p>
+            </th>
+            <th>
+                <p>لمية  بقیا</p>
+                <p>Discount Amount</p>
+            </th>
+
+            <th>
+                <p>
+                    قيمة الضريبة(٪)
+                </p>
+                <p>
+                    VAT Rate (%)
+                </p>
+            </th>
+            <th>
+                <p>
+                    قيمة الضريبة
+                </p>
+                <p>
+                    VAT Amount
+                </p>
+            </th>
+            <th>
+                <p>
+                    لميةالمجموع الفرعي
+                    (باستثناء ضريبة القيمة المضافة)
+                </p>
+                <p style="text-align: left;padding-left: 10px;">
+                    Subtotal <br>
+                    (Exclusive Of VAT)
+                </p>
+            </th>
+            <th>
+                <p>
+                    المجموع الفرعي
+                    (شامل ضريبة القيمة المضافة)
+                </p>
+                <p style="text-align: left;padding-left: 10px;">
+                    Subtotal <br>
+                    (Inclusive Of VAT)
+                </p>
+            </th>
+        </tr>
+
+
+        @foreach (var item in Model.PurchaseInvoiceDetails)
+        {
+
+
+            <tr>
+
+
+
+                <td>
+                    @item.Item.Name
+
+
+                </td>
+                <td>
+                    @item.CostPrice SAR
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                <td>
+                    @item.DiscountPercentage
+                </td>
+                <td>
+                    @item.DiscountAmount
+                </td>
+
+                <td>
+                    @item.VATPercentage %
+                </td>
+                <td>
+                    @item.VATAmount SAR
+                </td>
+                <td>
+                    @item.SubTotalVATExclusive SAR
+                </td>
+                <td>
+                    @item.SubTotalVATInclusive SAR
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+
+<!-- @* overall summary *@ -->
+
+<div class="summary">
+    <div class="summary-header">
+        <div>
+            Overall Summary
+        </div>
+        <div>ملخص شامل</div>
+    </div>
+
+    <!-- @* amount *@ -->
+    <div class="list">
+        <div>
+            Amount Rebate or Discount
+
+        </div>
+        <div class="list-value">
+            <span style="margin-left: -17px;">@Model.DiscountAmount &nbsp SAR</span>
+        </div>
+        <div>
+            مبلغ الخصم أو الحسم
+        </div>
+    </div>
+    <!-- @* VAT *@ -->
+    <div class="list">
+        <div>
+            VAT Total
+        </div>
+        <div class="list-value">
+            <span style="margin-left: 171px;">@Model.TotalVAT &nbsp SAR</span>
+        </div>
+        <div>
+            إجمالي ضريبة القيمة المضافة
+        </div>
+    </div>
+    <!-- @* VAT inclusive *@ -->
+    <div class="list">
+        <div>
+            Invoice Gross Total ( Inclusive Of Inclusive )
+        </div>
+        <div class="list-value">
+            <span style="margin-left: -5px;">@Model.GrossTotal &nbsp SAR</span>
+        </div>
+        <div>
+            إجمالي الفاتورة (شاملاً ضريبة القيمة المضافة)
+        </div>
+    </div>
+
+</div>

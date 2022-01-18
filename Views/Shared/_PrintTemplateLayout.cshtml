@@ -1,0 +1,122 @@
+﻿@using Microsoft.EntityFrameworkCore;
+@inject InvoiceGenerator.Data.ApplicationDbContext context
+@{
+    var aboutUs = await context.AboutUs.FirstOrDefaultAsync();
+
+
+    @functions{
+        string ConvertNumeralsToArabic(string input)
+
+        {
+
+            return input?.Replace('0', '٠')
+
+                        ?.Replace('1', '۱')
+
+                        ?.Replace('2', '۲')
+
+                        ?.Replace('3', '۳')
+
+                        ?.Replace('4', '٤')
+
+                        ?.Replace('5', '۵')
+
+                        ?.Replace('6', '٦')
+
+                        ?.Replace('7', '٧')
+
+                        ?.Replace('8', '٨')
+
+                        ?.Replace('9', '٩');
+
+        }
+    }
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>@ViewData["Title"]</title>
+
+    @RenderSection("Style", required: false)
+</head>
+
+<body>
+
+    <div class="print-wrapper">
+        <div class="header">
+            <div class="header-details">
+                <h1>@aboutUs?.BusinessName <span style="font-size: 12px">Trading Est.</span></h1>
+                <p style="margin-bottom: 10px">@aboutUs?.BussinessTagLine</p>
+                <p> CR: &nbsp; <span>@aboutUs?.Cr</span></p>
+                <p>
+                    @aboutUs?.StreetName - @aboutUs?.City - @aboutUs?.District
+                </p>
+                <p>
+                    Tel: &nbsp; <span>@aboutUs?.Tel</span>
+                </p>
+                <p> Mob: &nbsp;<span>@aboutUs?.Mob</span></p>
+            </div>
+            <!-- @* Logo *@ -->
+            <div>
+                @*<img alt="logo" src="logo.PNG" alt="LOGO">*@
+                <img src="~/assets/logo" width="100px" height="85px" asp-append-version="true" alt="Logo" />
+            </div>
+            <div class=" header-details header-details-ar" dir="rtl">
+                <h1>
+                    @aboutUs?.BusinessNameArabic
+                    <span style="font-size: 12px">.مؤسسة للتجارة</span>
+                </h1>
+                <p>
+                    @aboutUs.BussinessTagLineArabic
+                </p>
+                <p>
+                    سجل تجارى :&nbsp; <span>
+                        @ConvertNumeralsToArabic(aboutUs?.Cr)
+                    </span>
+                </p>
+                <p>
+                    @aboutUs?.DistrictArabic - @aboutUs?.CityArabic - @aboutUs?.StreetNameArabic
+                </p>
+                <p>
+                    :هاتف
+                    &nbsp; <span>@ConvertNumeralsToArabic(aboutUs?.Tel)</span>
+                </p>
+                <p>
+                    الغوغاء:
+                    &nbsp;<span>@ConvertNumeralsToArabic(aboutUs?.Mob)</span>
+                </p>
+            </div>
+        </div>
+        @*Content*@
+
+        @RenderBody()
+
+
+        <!-- @* footer *@ -->
+
+        <div class="footer">
+            <div style="font-weight: 600;">
+                @aboutUs?.District |  @aboutUs?.City |  @aboutUs?.StreetName | Mob#  @aboutUs?.Mob | Tel #  @aboutUs?.Tel
+                | Email:  @aboutUs?.Email
+            </div>
+
+            <div dir="rtl" style="margin-top: 10px">
+
+                البريد الإللتروني  @aboutUs?.Email | رقم هاتف  @ConvertNumeralsToArabic(aboutUs?.Tel) | رقم الهاتف المحمول  @ConvertNumeralsToArabic(aboutUs?.Mob) |  @aboutUs?.StreetNameArabic | @aboutUs?.CityArabic |  @aboutUs?.DistrictArabic
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>

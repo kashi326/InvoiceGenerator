@@ -1,0 +1,67 @@
+﻿
+@{
+
+    @functions{
+        string ConvertNumeralsToArabic(string input)
+
+        {
+
+            return input?.Replace('0', '٠')
+
+                        ?.Replace('1', '۱')
+
+                        ?.Replace('2', '۲')
+
+                        ?.Replace('3', '۳')
+
+                        ?.Replace('4', '٤')
+
+                        ?.Replace('5', '۵')
+
+                        ?.Replace('6', '٦')
+
+                        ?.Replace('7', '٧')
+
+                        ?.Replace('8', '٨')
+
+                        ?.Replace('9', '٩');
+
+        }
+    }
+
+}
+<div id="invoice-POS" style="padding: 2mm; width: 57mm; background: #fff;">
+
+    <center id="top" style="margin-bottom:8px">
+        <img src="~/assets/logo" class="logo" style="height: 120px; width: 120px;" asp-append-version="true" alt="Logo" />
+    </center><!--End InvoiceTop-->
+
+
+    <div id="bot" style=" min-height: 50px; ">
+        @RenderBody()
+    </div>
+    <!--End InvoiceBot-->
+</div><!--End Invoice-->
+<script>
+
+        function PrintComponent() {
+            var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title>' + document.title + '</title>');
+            mywindow.document.write('</head><body >');
+            mywindow.document.write(document.getElementById('invoice-POS').outerHTML);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+            mywindow.print();
+            mywindow.close();
+
+            return true;
+        }
+        PrintComponent()
+
+
+
+
+</script>

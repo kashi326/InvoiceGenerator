@@ -1,0 +1,241 @@
+﻿@model IEnumerable<InvoiceGenerator.Models.PurchaseInvoice>
+@{
+    ViewData["Title"] = "Purchase Invoices ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var CONTROLLER_NAME = this.ViewContext.RouteData.Values["controller"].ToString();
+    var CurrentLanguage = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
+    int random = new Random().Next();
+
+}
+@section HEAD{
+    <link href="~/css/newreports.css" rel="stylesheet" />
+    <link href="~/css/editor.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/select.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <link href="~/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/buttons.bootstrap.min.css" rel="stylesheet" />
+}
+<main id="main">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb rounded-0 bg-transparent">
+            <li class="breadcrumb-item active">@Localizer[@CONTROLLER_NAME]</li>
+        </ol>
+    </nav>
+    <div class="content-box bg-white">
+        <div class="col-4 title-bar d-flex align-items-center border-0">
+            <a href='@Url.Action("Index","Reports")'>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-arrows-rep" width="47" viewBox="0 0 47 47">
+                    <defs>
+                        <filter id="Ellipse_23" x="0" y="0" width="47" height="47" filterUnits="userSpaceOnUse">
+                            <feOffset dy="3" input="SourceAlpha" />
+                            <feGaussianBlur stdDeviation="3" result="blur" />
+                            <feFlood flood-opacity="0.161" />
+                            <feComposite operator="in" in2="blur" />
+                            <feComposite in="SourceGraphic" />
+                        </filter>
+                    </defs>
+                    <g id="Group_455" data-name="Group 455" transform="translate(9 35.418) rotate(-90)">
+                        <g transform="matrix(0, 1, -1, 0, 35.42, -9)" filter="url(#Ellipse_23)">
+                            <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 35) rotate(-90)" stroke-width="2">
+                                <circle cx="14.5" cy="14.5" r="14.5" stroke="none" />
+                                <circle cx="14.5" cy="14.5" r="13.5" fill="none" />
+                            </g>
+                        </g>
+                        <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.97) rotate(180)">
+                            <path id="Path_22" data-name="Path 22" d="M0,6.349,6.419,0,12.5,6.349" transform="translate(12.5 6.349) rotate(180)" stroke-width="2" />
+                        </g>
+                    </g>
+                </svg>
+                @*<img src="~/icons/Back.png" />*@
+            </a>
+
+            <h2 class="text-main mx-3">@Localizer["Purchase Invoices Report"]</h2>
+        </div>
+
+
+        <div class="Filters">
+            <h5>@Localizer["Filters"]</h5>
+            <form asp-action="PurchaseInvoices" method="get" class="d-flex align-items-end">
+                <div class="form-group mx-1">
+                    <br />
+                    <label for="DateRange">@Localizer["Date"]</label>
+                    <input class="form-control" id="daterange" name="DateRange" />
+                </div>
+                <div class="form-group mx-1">
+                    <label for="CustomerName">@Localizer["Supplier Name"]</label>
+                    <input type="text" id="Name" name="Name" class="form-control" />
+
+                </div>
+                <div class="form-group mx-1">
+                    <label for="Creator">@Localizer["Created By"] </label>
+                    <input id="CreatedBy" name="CreatedBy" type="text" class="form-control" />
+                </div>
+                <div class="form-group mx-1">
+                    <input type="submit" value="@Localizer["Apply"]" class="btn btn-primary " />
+                </div>
+            </form>
+        </div>
+        <div class="row border mx-auto my-0">
+            <div class="col d-flex justify-content-end align-items-center" id="PrintButtonContainer">
+                <div class="dropdown">
+                    <button class="btn btn-primary mx-2 dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @Localizer["Export"]
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <button class="dropdown-item" id="csv" type="button">CSV</button>
+                        <button class="dropdown-item" id="excel" type="button">Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="ReportTable">
+                <thead class="bg-submain">
+                    <tr>
+                        <th>#</th>
+                        <th>@Localizer["Invoice ID"]</th>
+                        <th>@Localizer["Created Date"]</th>
+                        <th>@Localizer["Supplier Name"]</th>
+                        <th>@Localizer["Created By"]</th>
+                        <th>@Localizer["Gross Total"]</th>
+                        <th>@Localizer["VAT Total"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var customerInvoice in Model)
+                    {
+                        <tr>
+                            <td></td>
+                            <td>@customerInvoice.InvoiceID</td>
+                            <td>@customerInvoice.IssuedDate.ToShortDateString()</td>
+                            <td>@customerInvoice.SupplierName</td>
+                            <td>@customerInvoice.CreatedBy</td>
+                            <td>  @customerInvoice.GrossTotal</td>
+                            <td>
+                                @customerInvoice.TotalVAT
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">@Localizer["Total"]</td>
+                        <td>@Localizer["SAR"] @Model.Sum(x => x.GrossTotal)</td>
+                        <td>@Localizer["SAR"] @Model.Sum(x => x.TotalVAT)</td>
+                    </tr>
+                </tfoot>
+                }
+            </table>
+        </div>
+    </div>
+</main>
+
+
+<script type="text/javascript" language="javascript"
+        src="~/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" language="javascript"
+        src="~/js/buttons.print.min.js"></script>
+<script src="~/js/jQuery.print.min.js"></script>
+
+<script src="~/js/jszip.min.js"></script>
+<script src="~/js/pdfmake.min.js"></script>
+<script src="~/js/vfs_fonts.js"></script>
+
+<script src="~/js/buttons.html5.min.js"></script>
+
+<script src="~/js/buttons.bootstrap.min.js"></script>
+<script>
+    $("#daterange").daterangepicker(
+        {
+            locale: {
+                format: 'YYYY/MM/DD'
+            }
+        });
+    $(function () {
+        var editor;
+        var ReportTable = $('#ReportTable').DataTable({
+            sDom: '<"dt-buttons"Bf>tipr',
+            language: {
+                searching: false,
+                paginate: {
+                    next: '<svg xmlns="http://www.w3.org/2000/svg" class=" svg-arrows-dbl" xmlns:xlink="http://www.w3.org/1999/xlink" width="47" height="48" viewBox="0 0 47 48"> < defs > <filter id="Ellipse_23" x="0" y="0" width="47" height="48" filterUnits="userSpaceOnUse"><feOffset dy="3" input="SourceAlpha" /> <feGaussianBlur stdDeviation="3" result="blur" />        <feFlood flood-opacity="0.161" />                <feComposite operator="in" in2="blur" />              <feComposite in="SourceGraphic" />              </filter>  </defs >             <g id="Group_458" data-name="Group 458" transform="translate(8.697 35.768) rotate(-90)">  <g transform="matrix(0, 1, -1, 0, 35.77, -8.7)" filter="url(#Ellipse_23)">                    <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 36) rotate(-90)"  stroke-width="2">                          <ellipse cx="15" cy="14.5" rx="15" ry="14.5"  />                            <ellipse cx="15" cy="14.5" rx="14" ry="13.5"  />                       </g>                    </g>                    <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.681) rotate(180)">                       <path id="Path_22" data-name="Path 22" d="M0,0,6.419,6.349,12.5,0" transform="translate(12.5 6.349) rotate(180)"   stroke-width="2" />                   </g>                </g></svg >',
+                    previous: '<svg xmlns="http://www.w3.org/2000/svg" class=" svg-arrows-dbl" xmlns:xlink="http://www.w3.org/1999/xlink" width="47" height="48" viewBox="0 0 47 47"> < defs >  <filter id="Ellipse_23" x="0" y="0" width="47" height="48" filterUnits="userSpaceOnUse"><feOffset dy="3" input="SourceAlpha" />  <feGaussianBlur stdDeviation="3" result="blur" />     <feFlood flood-opacity="0.161" />                    <feComposite operator="in" in2="blur" />                    <feComposite in="SourceGraphic" />                </filter>  </defs >               <g id="Group_455" data-name="Group 455" transform="translate(9 35.418) rotate(-90)">  <g transform="matrix(0, 1, -1, 0, 35.42, -9)" filter="url(#Ellipse_23)">        <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 35) rotate(-90)"   stroke-width="2">                            <circle cx="14.5" cy="14.5" r="14.5" />                            <circle cx="14.5" cy="14.5" r="13.5"  />                        </g>                    </g>                    <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.97) rotate(180)">                        <path id="Path_22" data-name="Path 22" d="M0,6.349,6.419,0,12.5,6.349" transform="translate(12.5 6.349) rotate(180)"  stroke-width="2" />                    </g>                </g></svg >',
+
+
+
+                    @*next: "<img src='@Url.Content("~/images/right-arrow.png")' >", // or '→'
+                    previous: "<img src='@Url.Content("~/images/left-arrow.png")'>", // or '←'*@
+                },
+            },
+
+            //"columnDefs": [
+            //    {
+            //        "targets": [0],
+            //        "visible": false,
+
+            //    },
+            //],
+            buttons: [
+                'csvHtml5',
+                'excelHtml5',
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).find('thead')
+                            .css({ background: '#5068B8', color: 'white' });
+
+                    }, action: function (win, e, dt, button, config) {
+
+                        debugger
+                        var daterange = $('#daterange').val();
+                        if (!daterange) {
+                            daterange = '';
+                        }
+                        var customerName = $('#Name').val();
+                        if (!customerName) {
+                            customerName = '';
+                        }
+                        var creator = $('#CreatedBy').val();
+                        if (!creator) {
+                            creator = '';
+                        }
+                        var status = $('Status').val();
+
+
+
+                        var url = '@Url.Action("PurchaseInvoices")' + `/?DateRange=${daterange}&Name=${customerName}&CreatedBy=${creator}&print=true`;
+
+                        window.location.href = url;
+                    }
+                }
+
+            ]
+        });
+        $('.dt-buttons button').addClass('btn-primary').removeClass('btn-default')
+        $('#ReportTable_filter').remove()
+        const printButtonContainer = $('#PrintButtonContainer')
+        ReportTable.buttons().container()
+            .appendTo(printButtonContainer);
+
+        printButtonContainer.find('.dt-buttons').removeClass('btn-group');
+        printButtonContainer.find('.buttons-excel').addClass('d-none');
+        printButtonContainer.find('.buttons-csv').addClass('d-none');
+        $('#csv').click(() => {
+            $('.buttons-csv').click();
+        })
+        $('#excel').click(() => {
+            $('.buttons-excel').click();
+        })
+    });
+
+    //    add this code to add dropdown for export
+    // printButtonContainer.find('.dt-buttons').removeClass('btn-group');
+    // printButtonContainer.find('.buttons-excel').addClass('d-none');
+    // printButtonContainer.find('.buttons-csv').addClass('d-none');
+   /* })*/
+</script>
+
+
+

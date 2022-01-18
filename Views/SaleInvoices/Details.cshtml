@@ -1,0 +1,355 @@
+﻿@model InvoiceGenerator.Models.SaleInvoice
+@using Microsoft.EntityFrameworkCore;
+@inject InvoiceGenerator.Data.ApplicationDbContext _context;
+@{
+    ViewData["Title"] = "Sale Invoice Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var AREA_NAME = Microsoft.AspNetCore.Mvc.Razor.RazorViewEngine.GetNormalizedRouteValue(ViewContext, "area");
+    var CONTROLLER_NAME = this.ViewContext.RouteData.Values["controller"].ToString();
+    var aboutUs = await _context.AboutUs.FirstOrDefaultAsync();
+
+}
+
+@section HEAD{
+
+    <style>
+
+        td, th {
+            font-size: 14px;
+            text-align: center;
+            vertical-align: middle !important;
+        }
+
+        td {
+            font-size: 12px;
+        }
+
+        tbody tr td:first-child {
+            margin: auto;
+            min-height: 56px;
+        }
+
+        thead > tr {
+            height: 35px;
+        }
+
+        .qty {
+            min-width: 115px;
+        }
+    </style>
+}
+
+<main id="main">
+<!-- Breadcrumb -->
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb rounded-0 bg-transparent">
+        <li class="breadcrumb-item">
+            <a>@Localizer[@CONTROLLER_NAME]</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer[@CONTROLLER_NAME]</li>
+    </ol>
+</nav>
+
+
+<div class="content-box bg-white">
+<div>
+
+</div>
+<div class="title-bar d-flex justify-content-between">
+    <div class="col-4 d-flex justify-content-start align-items-center mx-0 px-0">
+        <a href="@Url.Action("Index", "SaleInvoices")">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-arrows" width="47" viewBox="0 0 47 47">
+                <defs>
+                    <filter id="Ellipse_23" x="0" y="0" width="47" height="47" filterUnits="userSpaceOnUse">
+                        <feOffset dy="3" input="SourceAlpha"/>
+                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                        <feFlood flood-opacity="0.161"/>
+                        <feComposite operator="in" in2="blur"/>
+                        <feComposite in="SourceGraphic"/>
+                    </filter>
+                </defs>
+                <g id="Group_455" data-name="Group 455" transform="translate(9 35.418) rotate(-90)">
+                    <g transform="matrix(0, 1, -1, 0, 35.42, -9)" filter="url(#Ellipse_23)">
+                        <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 35) rotate(-90)" stroke-width="2">
+                            <circle cx="14.5" cy="14.5" r="14.5" stroke="none"/>
+                            <circle cx="14.5" cy="14.5" r="13.5" fill="none"/>
+                        </g>
+                    </g>
+                    <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.97) rotate(180)">
+                        <path id="Path_22" data-name="Path 22" d="M0,6.349,6.419,0,12.5,6.349" transform="translate(12.5 6.349) rotate(180)" stroke-width="2"/>
+                    </g>
+                </g>
+            </svg>
+
+        </a>
+        <h3 class="text-main mx-3">
+            @Localizer["Invoice Detail"]
+        </h3>
+    </div>
+
+
+    <div class="d-flex justify-content-end">
+        <a class="btn bg-main d-block text-light btn-outline-dark mx-1 btn-width" href="@Url.Action("Create")"> @Localizer["Go to Sales Invoice"]</a>
+        <a class="btn bg-main d-block text-light btn-outline-dark mx-1 btn-width" target="_blank" href="@Url.Action("PrintThermalInvoice", new { ID = Model?.InvoiceID })"> @Localizer["Print Thermal"]</a>
+        <a class="btn bg-main d-block text-light btn-outline-dark mx-1 btn-width" target="_blank" href="@Url.Action("PrintInvoice", new { ID = Model?.InvoiceID })"> @Localizer["Print"]</a>
+    </div>
+</div>
+
+
+<div class="row d-flex justify-content-between px-5">
+    <div class="col-7 d-flex justify-content-end">
+        <p class="text-center font-weight-bold text-main font-5 mb-0" style=" margin-right: 57px;">@Localizer["Invoice ID"]: @Model.InvoiceID</p>
+    </div>
+</div>
+
+
+<div class="card pt-0">
+<div class="card-body" id="Main">
+<div class="text-left">
+    @Localizer["Date"]: @Model.IssuedDate &nbsp; &nbsp;&nbsp; &nbsp;
+    @Localizer["Created By"]:@Model.CreatedBy
+</div>
+
+
+@*new tables*@
+<div class="row">
+    <div class="col-10">
+        <div class="border table d-flex justify-content-end " style="width:100%">
+            <table class="w-60 table">
+                <thead>
+                <tr class="bg-submain text-light">
+                    <th colspan="4" class="text-left" style="width:80%">
+                        <div class="row d-flex justify-content-between">
+                            <div class="col-6">
+                                <p class="my-font" style=" margin: 0 0 0 45px;">@Localizer["Seller Identification"] </p>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="d-flex justify-content-between px-5">
+                            <div class="col-4 text-left">
+                                <b>@Localizer["Name"]</b>
+                            </div>
+                            <div class="col-8 text-right">
+                            
+                                @aboutUs?.Name
+                            </div>
+
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <div class="row d-flex justify-content-between px-5">
+
+
+                            <div class="col-4 text-left">
+                                <b>@Localizer["Address"]</b>
+                            </div>
+                            <div class="col-8 text-right">
+                          
+                                @(aboutUs?.City + aboutUs?.District + aboutUs?.City )
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <div class="row d-flex justify-content-between px-5">
+
+
+                            <div class="col-6 text-left">
+                                <b>@Localizer["VAT Number"].Value</b>
+                            </div>
+                            <div class="col-6 text-right">
+                               
+                                @aboutUs?.VATNumber
+                            </div>
+
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <div class="row d-flex justify-content-between px-5">
+
+
+                            <div class="col-7 text-left">
+                                <b>@Localizer["Group Vat Number"]</b>
+                            </div>
+                            <div class="col-5 text-right">
+                           
+                                @aboutUs?.GroupVatNumber
+                            </div>
+
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+            <table class="w-60 table">
+                <thead>
+                <tr class="bg-submain text-light">
+                    <th colspan="4" class="text-left" style="width:80%">
+                        <div class="d-flex justify-content-between px-5">
+                            <div class="col-6">
+                                <p class="my-font" style=" margin: 0 0 0 5px;">@Localizer["Buyer Identification"]</p>
+                            </div>
+                        </div>
+                    </th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="row d-flex justify-content-between px-5">
+                            <div class="col-4 text-left">
+                                <b>@Localizer["Name"]</b>
+                            </div>
+                            <div class="col-8 text-right">
+                                @Model.CustomerName
+                            </div>
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="row d-flex justify-content-between px-5">
+                            <div class="col-5 text-left">
+                                <b>@Localizer["Address"]</b>
+                            </div>
+                            <div class="col-7 text-right">
+                                @Model.CustomerAddress
+                            </div>
+
+                        </div>
+                    </td>
+                </tr>
+                @*<tr>
+                    <td>
+                        <div class="row d-flex justify-content-between px-5">
+                            <div class="col-6 text-left">
+                                <b>@Localizer["VAT Number"]</b>
+                            </div>
+                            <div class="col-6 text-right">
+                                @Model.CustomerVATNumber
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="row d-flex justify-content-between px-5">
+                            <div class="col-7 text-left">
+                                <b>@Localizer["Group Vat Number"]</b>
+                            </div>
+                            <div class="col-5 text-right">
+                                @Model.CustomerGroupVATNumber
+                            </div>
+                        </div>
+                    </td>
+                </tr>*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-2 table d-flex justify-content-end" style="border-top: 1px solid #dee2e6 !important; border-right: 1px solid #dee2e6 !important; border-bottom: 1px solid #dee2e6 !important; border-left: 1px solid #dee2e6 !important; ">
+        @if (Model.QrCode != null)
+        {
+            <img style=" width: 80%; height: auto; margin: auto;" src="@Model.QrCode" alt=""/>
+        }
+    </div>
+</div>
+
+<br/>
+<br/>
+<table class="w-100 table">
+    <thead>
+
+    <tr class="bg-submain text-light">
+        <th>@Localizer["S.No"]</th>
+        <th>@Localizer["ID"]</th>
+        <th>@Localizer["Item"]</th>
+        <th>@Localizer["Unit Price"]</th>
+        <th>@Localizer["Quantity"]</th>
+        <th>@Localizer["VAT %"]</th>
+        @*<th>@Localizer["Discount %"]</th>*@
+        <th>@Localizer["VAT Amount"]</th>
+        @*<th>@Localizer["Discount Amount"]</th>*@
+        <th>@Localizer["Total Amount (VAT Incl.)"]</th>
+        <th>@Localizer["Total Amount (VAT Excl.)"]</th>
+    </tr>
+    </thead>
+    <tbody>
+        @{ int i = 0;}
+    @foreach(var item in Model.SaleInvoiceDetails)
+            {
+        <tr>
+            <td>@(++i)</td>
+            <td>@item.ItemID</td>
+            <td>@item.Item?.Name</td>
+            <td>@item.SellPrice</td>
+            <td>@item.Quantity</td>
+            <td>@item.VATPercentage</td>
+            @*<td>@item.DiscountPercentage</td>*@
+            <td>@item.VATAmount</td>
+            @*<td>@item.DiscountAmount</td>*@
+            <td>@item.SubTotalVATInclusive</td>
+            <td>@item.SubTotalVATExclusive</td>
+        </tr>
+            }
+    </tbody>
+</table>
+<div class="d-flex justify-content-between my-3">
+    <div>
+        <h4 class="mb-3">@Localizer["Payment Information"]</h4>
+        <div class="py-1 px-3">
+             <div class="btn-group d-flex w-100 "> 
+                 <b>@Localizer["Payment Method"]: </b>&nbsp; @Model.PaymentMethod 
+             </div> 
+        </div>
+    </div>
+
+    <div id="totalAmountSection" style="min-width:300px">
+        <div class="d-flex justify-content-between p-2">
+            <p>@Localizer["Total"] </p>
+            <p>@Model.Total</p>
+        </div>
+        <div class="d-flex justify-content-between p-2">
+            <p>
+                <span>@Localizer["Discount"]</span> <b class="font-1">(@Model.DiscountPercentage %)</b>
+            </p>
+            <p> @Model.DiscountAmount</p>
+        </div>
+
+        @*<div class="d-flex justify-content-between p-2">
+            <p>@Localizer["Net Total"]</p>
+            <p>@Model.NetTotal</p>
+        </div>*@
+        <div class="d-flex justify-content-between p-2">
+            <p>
+                @Localizer["VAT"] <b class="font-1">(@Model.VATPercentage%)</b>
+            </p>
+            <p> @Model.TotalVAT</p>
+        </div>
+        <div class="d-flex justify-content-between bg-main text-light br-main p-2">
+            <p>@Localizer["Grand Total"]</p>
+            <p>@Localizer["SAR"] @Model.GrossTotal</p>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</main>

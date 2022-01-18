@@ -1,0 +1,177 @@
+﻿@model InvoiceGenerator.Models.SaleInvoice
+@using Microsoft.EntityFrameworkCore
+@inject InvoiceGenerator.Data.ApplicationDbContext context
+@{
+    var businessDetails = await context.AboutUs.FirstOrDefaultAsync();
+    Layout = "_ThermalInvoiceLayout";
+    ViewData["Title"] = "Print Invoice";
+    ViewData["Heading"] = "Sale Invoice";
+}
+@functions{
+    string ConvertNumeralsToArabic(string input)
+
+    {
+
+        return input?.Replace('0', '٠')
+
+                    ?.Replace('1', '۱')
+
+                    ?.Replace('2', '۲')
+
+                    ?.Replace('3', '۳')
+
+                    ?.Replace('4', '٤')
+
+                    ?.Replace('5', '۵')
+
+                    ?.Replace('6', '٦')
+
+                    ?.Replace('7', '٧')
+
+                    ?.Replace('8', '٨')
+
+                    ?.Replace('9', '٩');
+
+    }
+}
+<div id="bot" style=" min-height: 50px; ">
+    <p style="font-size:12px;font-weight:700; margin-bottom:0;text-align: center">فاتورة ضريبية مبسطة</p>
+    <p style="font-size:12px;font-weight:700; margin:0;text-align: center">Simplified Tax Invoice</p>
+    <p style="font-size:12px;text-align: center">@Model.InvoiceID</p>
+
+
+    <div style="margin-top:14px">
+        <div style="margin-bottom: 8px;border-bottom: 1px dashed #000;">
+            <div style="display: flex;justify-content: space-between;align-items: center">
+                <p style="font-size:12px;font-weight: bold;margin: 2px 0">Seller Name</p>
+                <p style="font-size:12px;font-weight: bold;margin: 2px 0;text-align: right">البائع اسم</p>
+            </div>
+            <div style="display: flex;justify-content: space-between;align-items: center">
+                <p style="font-size:12px;margin: 2px 0">@businessDetails?.Name</p>
+                <p style="font-size:12px;margin: 2px 0;text-align: right">@businessDetails?.NameArabic</p>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 8px;border-bottom: 1px dashed #000;">
+            <div style="display: flex;justify-content: space-between;align-items: center">
+                <p style="font-size:12px;font-weight: bold;margin: 2px 0">Address</p>
+                <p style="font-size:12px;font-weight: bold;margin: 2px 0;text-align: right">عنوان</p>
+            </div>
+            <div style="display: flex;justify-content: space-between;align-items: center">
+                <p style="font-size:12px;margin: 2px 0">@businessDetails?.City, @businessDetails?.District, @businessDetails?.Country </p>
+                <p style="font-size:12px;margin: 2px 0;text-align: right">@businessDetails?.CityArabic, @businessDetails?.DistrictArabic, @businessDetails?.CountryArabic</p>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 8px;border-bottom: 1px dashed #000;">
+            <div style="display: flex;justify-content: space-between;align-items: center">
+                <p style="font-size:12px;font-weight: bold;margin: 2px 0">VAT No</p>
+                <p style="font-size:12px;font-weight: bold;margin: 2px 0;text-align: right">ضريبة القيمة المضافة</p>
+            </div>
+            <div style="display: flex;justify-content: space-between;align-items: center">
+                <p style="font-size:12px;margin: 2px 0">@businessDetails?.VATNumber</p>
+                <p style="font-size:12px;margin: 2px 0;text-align: right">@ConvertNumeralsToArabic(businessDetails.VATNumber))</p>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 8px">
+            <div style="display: flex;justify-content: space-between;align-items: center">
+                <p style="font-size:12px;font-weight: bold;margin: 2px 0">Created By</p>
+                <p style="font-size:12px;font-weight: bold;margin: 2px 0">Created Date</p>
+            </div>
+            <div style="display: flex;justify-content: space-between;align-items: center">
+                <p style="font-size:12px;margin: 2px 0">@Model.CreatedBy</p>
+                <p style="font-size:12px;margin: 2px 0">@Model.IssuedDate</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="table" style="border-top: 1px dashed #000;">
+        <table style=" width: 100%; border-collapse: collapse;">
+            <tr class="tabletitle" style="font-size: 0.5em;border-bottom: 1px dashed #000;">
+                <th style="width: 3.4mm">
+                    <p style="margin:0;font-weight: 700;font-size: 12px">S.No</p>
+                    <p style="margin:0;font-size: 12px">عدد</p>
+                </th>
+                <th style="width: 8mm">
+                    <p style="margin:0;font-weight: 700;font-size: 12px">Item</p>
+                    <p style="margin:0;font-size: 12px">غرض</p>
+                </th>
+                <th style="width: 7.2mm">
+                    <p style="margin:0;font-weight: 700;font-size: 12px">Unit Price</p>
+                    <p style="margin:0;font-size: 12px">سعر الوحدة</p>
+                </th>
+                <th style="width: 2.5mm">
+                    <p style="margin:0;font-weight: 700;font-size: 12px">Qty</p>
+                    <p style="margin:0;font-size: 12px">كمية</p>
+                </th>
+                <th style="width: 1.2mm">
+                    <p style="margin:0;font-weight: 700;font-size: 12px">Disc</p>
+                    <p style="margin:0;font-size: 12px">خصم</p>
+                </th>
+                <th style="width: 12.44mm">
+                    <p style="margin:0;font-weight: 700;font-size: 12px">Amount Inc. VAT</p>
+                    <p style="margin:0;font-size: 12px">المبلغ يشمل الضريبة </p>
+                </th>
+            </tr>
+            @{
+                int i = 0;
+            }
+            @foreach (var sale in Model.SaleInvoiceDetails)
+            {
+                <tr class="tabletitle">
+                    <th style="width: 3.4mm">
+                        <p style="margin:0;font-size: 12px;font-weight:500">@(++i)</p>
+                    </th>
+                    <th style="width: 8mm">
+                        <p style="margin:0;font-size: 12px;font-weight:500">@sale.Item.Name</p>
+                    </th>
+                    <th style="width: 7.2mm">
+                        <p style="margin:0;font-size: 12px;font-weight:500">@sale.SellPrice</p>
+                    </th>
+                    <th style="width: 2.5mm">
+                        <p style="margin:0;font-size: 12px;font-weight:500">@sale.Quantity</p>
+                    </th>
+                    <th style="width: 1.2mm">
+                        <p style="margin:0;font-size: 12px;font-weight:500">@sale.DiscountAmount</p>
+                    </th>
+                    <th style="width: 12.44mm">
+                        <p style="margin:0;font-size: 12px;font-weight:500">@sale.SubTotalVATInclusive</p>
+                    </th>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div style="width: 100%;">
+        <p style="font-size:12px;font-weight:700">Overall Summary</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom: 2px;border-bottom: 1px dashed #000;">
+            <p style="width:70px;font-size: 12px;margin: 3px 0">Total Discount</p>
+            <p style="font-size: 12px;font-weight: 500;margin: 3px 0">@Model.DiscountAmount SAR</p>
+            <p style="width:70px;font-size: 12px;margin: 3px 0;text-align: right">إجمالي الخصم</p>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom: 2px;border-bottom: 1px dashed #000;">
+            <p style="width:70px;font-size: 12px;margin: 3px 0">Total Amount exc. VAT(@Model.VATPercentage%)</p>
+            <p style="font-size: 12px;font-weight: 500;margin: 3px 0">@Model.NetTotal SAR</p>
+            <p style="width:70px;font-size: 12px;margin: 3px 0;text-align: right">المبلغ الإجمالي غير. ضريبة القيمة المضافة</p>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom: 2px;border-bottom: 1px dashed #000;">
+            <p style="width:70px;font-size: 12px;margin: 3px 0">VAT Total</p>
+            <p style="font-size: 12px;font-weight: 500;margin: 3px 0">@Model.TotalVAT SAR</p>
+            <p style="width:70px;font-size: 12px;margin: 3px 0;text-align: right">مبلغ ضريبة القيمة المضافة</p>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom: 2px;border-bottom: 1px dashed #000;">
+            <p style="width:70px;font-size: 12px;margin: 3px 0">Total Amount Inc. VAT(@Model.VATPercentage%)</p>
+            <p style="font-size: 12px;font-weight: 500;margin: 3px 0">@Model.GrossTotal SAR</p>
+            <p style="width:70px;font-size: 12px;margin: 3px 0;text-align: right">إجمالي المبلغ شركة ضريبة القيمة المضافة</p>
+        </div>
+    </div>
+
+    @if (Model.QrCode != null)
+    {
+        <div style="display:flex;justify-content:center;align-items:center">
+            <img width="200" height="200" src="@Model.QrCode" alt="" />
+        </div>
+    }
+
+</div>

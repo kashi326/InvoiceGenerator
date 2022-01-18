@@ -1,0 +1,169 @@
+﻿@model IEnumerable<InvoiceGenerator.Models.Item>
+
+@{
+    ViewData["Title"] = "Inventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var AREA_NAME = Microsoft.AspNetCore.Mvc.Razor.RazorViewEngine.GetNormalizedRouteValue(ViewContext, "area");
+    var CONTROLLER_NAME = this.ViewContext.RouteData.Values["controller"].ToString();
+
+
+}
+
+
+
+@section HEAD{
+    <style>
+        .arrow,
+        .pagination-links,
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+
+        label {
+            font-size: 14px !important;
+        }
+    </style>
+
+}
+
+<main id="main">
+    <!-- Breadcrumb -->
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb rounded-0 bg-transparent">
+            <li class="breadcrumb-item active" aria-current="page">@Localizer["Items"]</li>
+        </ol>
+    </nav>
+
+
+    <div class="content-box bg-white card">
+        <div class="title-bar">
+            <h2 class="text-main">@Localizer["Inventory"]</h2>
+        </div>
+        <div class="supplier-block">
+            <div class="tools-bar">
+                <div class="row align-items-start">
+                    <div class="col-12">
+                        <h5 class="text-muted text-dark d-flex justify-content-start">
+                            <span>@Localizer["Total Item"]:</span>
+                            <span id="totalItems">
+                                <b>@Model.Count()</b>
+                            </span>
+                        </h5>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12 col-sm-3">
+                        <div class="form-group m-0" id="search-by-group">
+                            <input id="search-by" type="text" class="form-control search-bar-ltr" name="search-by" value="" placeholder="@Localizer["Search"]">
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-9 d-flex justify-content-end">
+                        <a asp-action="BarCode" class="btn btn-outline-success mx-2">@Localizer["Print Bar Codes"]</a>
+                        <a asp-action="Create" class="btn btn-outline-success mx-2">@Localizer["Add New Item"] <span style="font-weight: bolder;">+</span></a>
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="InventoryTable" width="100%" class=" dataTable display table table-bordered table-striped">
+                <thead class="bg-submain text-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.ItemID)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Quantity)</th>
+                    <th>@Html.DisplayNameFor(model => model.ManufacturerName)</th>
+                    <th>@Html.DisplayNameFor(model => model.ShelfNumber)</th>
+                    <th>@Localizer["Actions"]</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="text-main action-link-bold" href='@Url.Action("Details")/@item.ItemID'>@item.ItemID</a>
+                        </td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Quantity
+                        </td>
+                        <td>
+                            @item.ManufacturerName
+                        </td>
+                        <td>
+                            @item.ShelfNumber
+                        </td>
+                        <td>
+                            <span class="dropdown-toggle icon-dots text-main" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></span>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <a class="text-main d-block text-center" asp-action="Edit" asp-route-id="@item.ItemID">@Localizer["Edit"]</a>
+                              <a class="text-main d-block text-center" asp-action="Details" asp-route-id="@item.ItemID">@Localizer["Details"]</a>
+                              <a class="text-main d-block text-center" asp-action="Delete" asp-route-id="@item.ItemID">@Localizer["Delete"]</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+        
+
+
+
+         @{
+             var cultureInfro = System.Threading.Thread.CurrentThread.CurrentUICulture;
+             var LanguageName = cultureInfro.Name;
+         }
+            @*var next = "<img src='@Url.Content("~/images/right-arrow.png")' >";
+        var previous = "<img src='@Url.Content("~/images/left-arrow.png")'>";*@
+
+
+            let next = '<svg xmlns="http://www.w3.org/2000/svg" class="pagination-links svg-arrows-dbl" xmlns:xlink="http://www.w3.org/1999/xlink" width="47" height="48" viewBox="0 0 47 48"> < defs > <filter id="Ellipse_23" x="0" y="0" width="47" height="48" filterUnits="userSpaceOnUse"><feOffset dy="3" input="SourceAlpha" /> <feGaussianBlur stdDeviation="3" result="blur" />        <feFlood flood-opacity="0.161" />                <feComposite operator="in" in2="blur" />              <feComposite in="SourceGraphic" />              </filter>  </defs >             <g id="Group_458" data-name="Group 458" transform="translate(8.697 35.768) rotate(-90)">  <g transform="matrix(0, 1, -1, 0, 35.77, -8.7)" filter="url(#Ellipse_23)">                    <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 36) rotate(-90)"  stroke-width="2">                          <ellipse cx="15" cy="14.5" rx="15" ry="14.5"  />                            <ellipse cx="15" cy="14.5" rx="14" ry="13.5"  />                       </g>                    </g>                    <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.681) rotate(180)">                       <path id="Path_22" data-name="Path 22" d="M0,0,6.419,6.349,12.5,0" transform="translate(12.5 6.349) rotate(180)"   stroke-width="2" />                   </g>                </g></svg >';
+            let previous = '<svg xmlns="http://www.w3.org/2000/svg" class="pagination-links svg-arrows-dbl" xmlns:xlink="http://www.w3.org/1999/xlink" width="47" height="48" viewBox="0 0 47 47"> < defs >  <filter id="Ellipse_23" x="0" y="0" width="47" height="48" filterUnits="userSpaceOnUse"><feOffset dy="3" input="SourceAlpha" />  <feGaussianBlur stdDeviation="3" result="blur" />     <feFlood flood-opacity="0.161" />                    <feComposite operator="in" in2="blur" />                    <feComposite in="SourceGraphic" />                </filter>  </defs >               <g id="Group_455" data-name="Group 455" transform="translate(9 35.418) rotate(-90)">  <g transform="matrix(0, 1, -1, 0, 35.42, -9)" filter="url(#Ellipse_23)">        <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 35) rotate(-90)"   stroke-width="2">                            <circle cx="14.5" cy="14.5" r="14.5" />                            <circle cx="14.5" cy="14.5" r="13.5"  />                        </g>                    </g>                    <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.97) rotate(180)">                        <path id="Path_22" data-name="Path 22" d="M0,6.349,6.419,0,12.5,6.349" transform="translate(12.5 6.349) rotate(180)"  stroke-width="2" />                    </g>                </g></svg >';
+        if ('@LanguageName' === "ar-SA") {
+             next = '<svg xmlns="http://www.w3.org/2000/svg" class="pagination-links svg-arrows-dbl" xmlns:xlink="http://www.w3.org/1999/xlink" width="47" height="48" viewBox="0 0 47 48"> < defs > <filter id="Ellipse_23" x="0" y="0" width="47" height="48" filterUnits="userSpaceOnUse"><feOffset dy="3" input="SourceAlpha" /> <feGaussianBlur stdDeviation="3" result="blur" />        <feFlood flood-opacity="0.161" />                <feComposite operator="in" in2="blur" />              <feComposite in="SourceGraphic" />              </filter>  </defs >             <g id="Group_458" data-name="Group 458" transform="translate(8.697 35.768) rotate(-90)">  <g transform="matrix(0, 1, -1, 0, 35.77, -8.7)" filter="url(#Ellipse_23)">                    <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 36) rotate(-90)"  stroke-width="2">                          <ellipse cx="15" cy="14.5" rx="15" ry="14.5"  />                            <ellipse cx="15" cy="14.5" rx="14" ry="13.5"  />                       </g>                    </g>                    <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.681) rotate(180)">                       <path id="Path_22" data-name="Path 22" d="M0,0,6.419,6.349,12.5,0" transform="translate(12.5 6.349) rotate(180)"   stroke-width="2" />                   </g>                </g></svg >';
+            previous = '<svg xmlns="http://www.w3.org/2000/svg" class="pagination-links svg-arrows-dbl" xmlns:xlink="http://www.w3.org/1999/xlink" width="47" height="48" viewBox="0 0 47 47"> < defs >  <filter id="Ellipse_23" x="0" y="0" width="47" height="48" filterUnits="userSpaceOnUse"><feOffset dy="3" input="SourceAlpha" />  <feGaussianBlur stdDeviation="3" result="blur" />     <feFlood flood-opacity="0.161" />                    <feComposite operator="in" in2="blur" />                    <feComposite in="SourceGraphic" />                </filter>  </defs >               <g id="Group_455" data-name="Group 455" transform="translate(9 35.418) rotate(-90)">  <g transform="matrix(0, 1, -1, 0, 35.42, -9)" filter="url(#Ellipse_23)">        <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 35) rotate(-90)"   stroke-width="2">                            <circle cx="14.5" cy="14.5" r="14.5" />                            <circle cx="14.5" cy="14.5" r="13.5"  />                        </g>                    </g>                    <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.97) rotate(180)">                        <path id="Path_22" data-name="Path 22" d="M0,6.349,6.419,0,12.5,6.349" transform="translate(12.5 6.349) rotate(180)"  stroke-width="2" />                    </g>                </g></svg >';
+        }
+            let Inventory = $("#InventoryTable").DataTable({
+           
+                filter: true,
+                
+            sDom: "tipr",
+            language: {
+                paginate: {
+                    next: next, // or '→'
+                    previous: previous, // or '←'
+                },
+            },
+           
+            responsive: {
+                breakpoints: [
+                    { name: 'desktop', width: Infinity },
+                    { name: 'tablet', width: 1024 },
+                    { name: 'fablet', width: 768 },
+                    { name: 'phone', width: 480 }
+                ]
+            }
+        });
+        $('#search-by').on('keyup',function () {
+            Inventory.search(this.value).draw();
+        });
+        });
+        
+       
+    </script>
+
+}

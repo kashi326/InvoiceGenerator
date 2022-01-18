@@ -1,0 +1,748 @@
+﻿@{
+    var CurrentLanguage = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+}
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no" />
+    <title>@ViewData["Title"]</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <!-- CSS -->
+    <!-- Boostrap Stylesheet -->
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+    <!--import Bootstrap 4 using cdn-->
+    @*<link rel="stylesheet" type="text/css"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />*@
+
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" media="print" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/reports.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-multiselect.min.css" />
+    <link href="~/css/daterangepicker.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="~/css/Notification.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/css/bootstrap-switch-button.min.css"
+          rel="stylesheet" />
+    <link href="~/css/Layout1.css" rel="stylesheet" />
+
+        <link rel="stylesheet" href="~/css/rtl.css" />
+        @*<link href="~/css/Layoutrtl.css" rel="stylesheet" />*@
+
+
+    <link href="~/css/dashboard.css" rel="stylesheet" />
+
+
+    @RenderSection("HEAD", required: false)
+    <!-- Scripts -->
+    <script src="~/js/jquery-3.5.1.min.js"></script>
+
+
+
+    <script src="~/js/popper.min.js"></script>
+
+
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/jquery.autocomplete.min.js"></script>
+    <script src="~/js/nicescroll.min.js"></script>
+    <script src="~/js/jquery.main.js"></script>
+    <script src="~/js/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+
+
+    <script src="~/js/Chart.min.js"></script>
+    <script src="~/js/bootstrap-multiselect.min.js"></script>
+    <script src="~/js/moment.min.js"></script>
+    <script src="~/js/daterangepicker.min.js"></script>
+
+    <!--Styles-->
+
+    <style>
+        .arrow,
+        .pagination-links {
+            cursor: pointer;
+        }
+
+        td, th {
+            width: auto;
+        }
+
+        .icon-dots {
+            font-size: 8px !important;
+        }
+
+        .sidebar-item, .nav-link {
+            font-weight: 600;
+        }
+
+
+
+
+        a.notif {
+            position: relative;
+            display: block;
+            height: 50px;
+            width: 50px;
+            background: url('~/wwwroot/images//evpC48G.png');
+            background-size: contain;
+            text-decoration: none;
+        }
+
+        .num {
+            position: absolute;
+            right: 11px;
+            top: 6px;
+            color: #fff;
+        }
+
+        .btn-outline-danger {
+            background-color: unset !important;
+        }
+    </style>
+
+
+
+</head>
+
+
+<body theme="layout-4" class="layout4" dir="ltr">
+
+    <header id="header" class="bg-white position-fixed" style="height: 73px">
+        <div class="container-fluid">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-5">
+                    <!-- Site Logo -->
+                </div>
+                <div class="col-5 d-flex justify-content-end" style="margin-right: 41px">
+                    <nav class="user-links">
+                        <ul class="nav">
+                            <li class="nav-item dropdown" id="UserNavSection" style="height: 56px">
+                                <a href="#" class=" text-main d-flex dropdown-toggle" style="padding-right: 0; padding-top:8px" data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    <div class="avatar-title text-main">
+                                        <strong class="d-block">@Context.User?.Identity?.Name</strong> 
+                                    </div>
+                                    <div class="avatar ">
+                                        <span class="icon-user-fill"></span>
+                                    </div>
+                                </a>
+                                <div class="dropdown-menu">
+
+                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                        <a href="#Logout" id="Logout" class="dropdown-item">@Localizer["Logout"]</a>
+                                    </form>
+
+
+                                </div>
+                                <script>
+                                    $(function () {
+                                        $('#Logout').click(function () {
+                                            $(this).closest('form').submit();
+                                        })
+                                    })
+                                </script>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="wrapper" class="d-flex grey">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="col-3 col-md-2" style="max-width:230px;">
+            <div class="d-flex flex-column h-100">
+                <!-- Sidebar Nav -->
+                <nav class="sidebar-nav  nicescroll-box " style="text-align:start;">
+                    <div class="nav-holder wrap">
+
+                        <ul class="nav flex-column">
+
+                            <li class="nav-item" id="sales">
+                                <a href="javascript:void(0)" class="nav-link sidebar-item">
+                                    @*<svg id="Layer_1" data-name="Layer 1" class="svgg @(CurrentLanguage == "ar-SA" ? "ml-2":"mr-2")" xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 1280 1024"><defs></defs><path class="cls-1" d="M640,974C386.09,974,179.5,767.37,179.5,513.45S386.09,53,640,53,1100.5,259.53,1100.5,513.45,893.93,974,640,974Zm0-879.58c-231.08,0-419.09,188-419.09,419.07S408.93,932.54,640,932.54s419.07-188,419.07-419.09S871.07,94.38,640,94.38Z" /><path class="cls-1" d="M640,894.31c-209.87,0-380.6-170.73-380.6-380.6S430.14,133.14,640,133.14s380.58,170.73,380.58,380.57S849.86,894.31,640,894.31Zm0-719.75c-187,0-339.17,152.14-339.17,339.15S453,852.89,640,852.89,979.16,700.72,979.16,513.71,827,174.56,640,174.56Z" /><path class="cls-1" d="M479.6,633.49a65.15,65.15,0,0,1-65.08-65.07,10.25,10.25,0,0,1,20.49,0,44.58,44.58,0,1,0,89.16,0c0-19.64-15.36-28.44-40.41-41.16-3-1.51-6-3-8.93-4.59l-3.64-1.75c-21.19-10.25-56.67-27.38-56.67-62.14a65.07,65.07,0,1,1,130.14,0,10.25,10.25,0,0,1-20.49,0,44.58,44.58,0,1,0-89.16,0c0,21.9,27.13,35,45.1,43.69l4,1.94c3.13,1.64,6,3.11,8.92,4.58,24.2,12.3,51.63,26.22,51.63,59.43A65.14,65.14,0,0,1,479.6,633.49Z" /><path class="cls-1" d="M561.31,632.9a10,10,0,0,1-3.47-.61,10.23,10.23,0,0,1-6.16-13.1l78.86-218.71c1.48-4.13,5.75-7.07,9.77-6.78a10.24,10.24,0,0,1,9.58,7l72.33,218.71a10.24,10.24,0,0,1-19.45,6.42l-63-190.57L570.94,626.13A10.23,10.23,0,0,1,561.31,632.9Z" /><path class="cls-2" d="M679.83,534.14H596.91a10.25,10.25,0,0,1,0-20.49h82.92a10.25,10.25,0,0,1,0,20.49Z" /><path class="cls-1" d="M851.68,633.43a10.2,10.2,0,0,1-7.73-3.52l-79.74-91.66v84.94a10.24,10.24,0,0,1-20.48,0V405.07a10.24,10.24,0,0,1,9.13-10.18c2.77-.3,68.42-7.14,97.91,19.3,9.76,8.76,14.71,19.95,14.71,33.28,0,53.12-52.75,74.83-81.17,82.68l75.09,86.32a10.24,10.24,0,0,1-7.72,17ZM764.21,414.57V513.7c6.34-1.07,80.79-14.76,80.79-66.23,0-7.46-2.51-13.19-7.89-18C821.08,415.08,784.79,413.64,764.21,414.57Z" /></svg>*@
+                                    <svg id="_2._Sales" data-name="2. Sales" xmlns="http://www.w3.org/2000/svg" width="16.35" class="svgg nav-icon-margin" height="16.35" viewBox="0 0 17.457 17.457">
+                                        <path id="Path_467" data-name="Path 467" d="M4,15.275a1.818,1.818,0,0,1-1.818-1.818V1.091A1.091,1.091,0,0,0,1.091,0h0A1.091,1.091,0,0,0,0,1.091V13.456a4,4,0,0,0,4,4H16.366a1.091,1.091,0,0,0,1.091-1.091h0a1.091,1.091,0,0,0-1.091-1.091Z" />
+                                        <path id="Path_468" data-name="Path 468" d="M19.091,15.546a1.091,1.091,0,0,0,1.091-1.091V10.091a1.091,1.091,0,0,0-2.182,0v4.364A1.091,1.091,0,0,0,19.091,15.546Z" transform="translate(-4.907 -2.454)" />
+                                        <path id="Path_469" data-name="Path 469" d="M7.091,15.546a1.091,1.091,0,0,0,1.091-1.091V10.091a1.091,1.091,0,0,0-2.182,0v4.364A1.091,1.091,0,0,0,7.091,15.546Z" transform="translate(-1.636 -2.454)" />
+                                        <path id="Path_470" data-name="Path 470" d="M13.091,14.183a1.091,1.091,0,0,0,1.091-1.091v-8a1.091,1.091,0,0,0-2.182,0v8A1.091,1.091,0,0,0,13.091,14.183Z" transform="translate(-3.271 -1.09)" />
+                                    </svg>
+
+                                    <span class="nav-icon-m">@Localizer["Sales"]</span>
+                                    <span class="arrow-left-sale">
+                                        <svg xmlns="http://www.w3.org/2000/svg" id="click-rotate" class="arrow-rotate-arb" width="5.876" height="8.322" viewBox="0 0 5.876 8.322">
+                                            <path id="Path_6" data-name="Path 6" d="M1661.055,1088.181l4.761,3.769-4.761,3.769" transform="translate(-1660.744 -1087.789)" />
+                                        </svg>
+                                    </span>
+                                </a>
+
+                                <ul class="drop-down collapse show" id="collapse1" aria-expanded="false">
+                                    <li class="nav-item ">
+                                        <a asp-controller="SaleInvoices" asp-action="Index" class="nav-link">@Localizer["Invoices"]</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a asp-controller="SaleInvoices" asp-action="Create" class="nav-link">@Localizer["Create New"]</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" id="Purchases">
+                                <a href="javascript:void(0)" class="nav-link collapsed sidebar-item">
+                                    <?xml version="1.0" encoding="UTF-8" ?>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" class="svgg nav-icon-margin" viewBox="0 0 24 24" width="16.35" height="16.35">
+                                        <circle cx="7" cy="22" r="2" />
+                                        <circle cx="17" cy="22" r="2" />
+                                        <path d="M22.813,9.583A6,6,0,0,1,12.8,3H4.242L4.2,2.648A3,3,0,0,0,1.222,0H0V2H1.222a1,1,0,0,1,.993.883L3.8,16.351A3,3,0,0,0,6.778,19H20V17H6.778a1,1,0,0,1-.993-.884L5.654,15H21.836Z" />
+                                        <polygon points="21 5 19 5 19 3 17 3 17 5 15 5 15 7 17 7 17 9 19 9 19 7 21 7 21 5" />
+                                    </svg>
+                                    <span class="nav-icon-m">@Localizer["Purchases"]</span>
+                                    <span class="arrow-left-purchase">
+                                        <svg xmlns="http://www.w3.org/2000/svg" id="click-rotate" class="arrow-rotate-arb" width="5.876" height="8.322" viewBox="0 0 5.876 8.322">
+                                            <path id="Path_6" data-name="Path 6" d="M1661.055,1088.181l4.761,3.769-4.761,3.769" transform="translate(-1660.744 -1087.789)" />
+                                        </svg>
+
+                                    </span>
+                                </a>
+                                <ul class="drop-down collapse" id="collapse2" aria-expanded="true">
+                                    <li class="nav-item">
+                                        <a asp-controller="PurchaseInvoices" asp-action="Index" class="nav-link">@Localizer["Invoices"]</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="PurchaseInvoices" asp-action="Create" class="nav-link">@Localizer["Create New"]</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li class="nav-item" id="Inventory">
+                                <a href="javascript:void(0)" class="nav-link collapsed  sidebar-item">
+                                    @*<img src="~/icons/Inventory.svg" alt="Inventory" class=" @(CurrentLanguage == "ar-SA" ? "ml-2":"mr-2")" height="37" width="37" />*@
+                                    @*<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" class="svgg @(CurrentLanguage == "ar-SA" ? "ml-2":"mr-2")" width="37" height="37" viewBox="0 0 1280 1024"><path class="cls-1" d="M1008.24,948.69H271.76a75.62,75.62,0,0,1-75.56-75.56V377.59a65.91,65.91,0,0,1,31.14-56.21L604.84,85.32a66.74,66.74,0,0,1,70.32,0l377.48,236.07a65.88,65.88,0,0,1,31.16,56.2V873.13A75.62,75.62,0,0,1,1008.24,948.69ZM625.67,118.62,248.17,354.68a26.85,26.85,0,0,0-12.7,22.91V873.13a36.33,36.33,0,0,0,36.29,36.29h736.48a36.33,36.33,0,0,0,36.29-36.29V377.59a26.87,26.87,0,0,0-12.7-22.9L654.33,118.62a27,27,0,0,0-28.66,0Z" /><rect class="cls-2" x="640" y="638.96" width="290.09" height="290.09" rx="1" /><path class="cls-1" d="M910.37,948.69H659.74a39.42,39.42,0,0,1-39.39-39.37V658.69a39.42,39.42,0,0,1,39.39-39.37H910.37a39.42,39.42,0,0,1,39.37,39.37V909.32A39.42,39.42,0,0,1,910.37,948.69ZM659.74,658.59l-.11,250.73,250.74.1.09-250.73-.09-.1Z" /><rect class="cls-2" x="494.95" y="348.85" width="290.09" height="290.09" rx="0.99" /><path class="cls-1" d="M765.6,658.58H514.4a39.12,39.12,0,0,1-39.08-39.08V368.29a39.12,39.12,0,0,1,39.08-39.08H765.6a39.12,39.12,0,0,1,39.08,39.08V619.5A39.12,39.12,0,0,1,765.6,658.58ZM514.4,368.48l.19,251,251-.19-.19-250.83Z" /><rect class="cls-2" x="349.9" y="638.94" width="290.09" height="290.09" rx="1.01" /><path class="cls-1" d="M620.26,948.67H369.65a39.42,39.42,0,0,1-39.39-39.37V658.69a39.43,39.43,0,0,1,39.39-39.38H620.26a39.42,39.42,0,0,1,39.37,39.38V909.3A39.41,39.41,0,0,1,620.26,948.67ZM369.65,658.58l-.11,250.72,250.72.1.09-250.71-.09-.11Z" /></svg>*@
+                                    <?xml version="1.0" encoding="UTF-8" ?>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="svgg nav-icon-margin" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="16.35" height="16.35"><path d="M21,0H3A3,3,0,0,0,0,3V8H24V3A3,3,0,0,0,21,0Z" /><path d="M1,10V24H23V10Zm15,5H8V13h8Z" /></svg>
+
+                                    <span class="nav-icon-m">@Localizer["Inventory"]</span>
+                                    <span class="arrow-left-inventory">
+                                        <svg xmlns="http://www.w3.org/2000/svg" id="click-rotate" class="arrow-rotate-arb" width="5.876" height="8.322" viewBox="0 0 5.876 8.322">
+                                            <path id="Path_6" data-name="Path 6" d="M1661.055,1088.181l4.761,3.769-4.761,3.769" transform="translate(-1660.744 -1087.789)" stroke-width="1" />
+                                        </svg>
+
+                                    </span>
+                                </a>
+                                <ul class="drop-down collapse" id="collapse3" aria-expanded="true">
+                                    <li class="nav-item">
+                                        <a asp-controller="Items" asp-action="Index" class="nav-link">@Localizer["Items"]</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item " id="Reports">
+                                <a href="javascript:void(0)" class="nav-link collapsed  sidebar-item">
+                                    <svg id="Layer_1" height="16.35" viewBox="0 0 24 24" width="16.35" xmlns="http://www.w3.org/2000/svg" class="svgg nav-icon-margin" =" data-name="Layer 1">
+                                        <path d="m15 14h-6v-2h6zm6-7v17h-18v-21a3 3 0 0 1 3-3h8v7zm-4 11h-10v2h10zm0-8h-10v6h10zm2.828-6.586-2.242-2.242a4 4 0 0 0 -1.586-.953v4.781h4.785a3.969 3.969 0 0 0 -.957-1.586z" />
+                                    </svg>
+                                    <span class="nav-icon-m">@Localizer["Reports"]</span>
+                                    <span class="arrow-left-reports">
+                                        <svg xmlns="http://www.w3.org/2000/svg" id="click-rotate" class="arrow-rotate-arb" width="5.876" height="8.322" viewBox="0 0 5.876 8.322">
+                                            <path id="Path_6" data-name="Path 6" d="M1661.055,1088.181l4.761,3.769-4.761,3.769" transform="translate(-1660.744 -1087.789)" stroke-width="1" />
+                                        </svg>
+
+                                    </span>
+                                </a>
+                                <ul class="drop-down collapse" id="collapse3" aria-expanded="true">
+                                    <li class="nav-item">
+                                        <a asp-controller="Reports" asp-action="SaleInvoices" class="nav-link">@Localizer["Sale Invoices"]</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-controller="Reports" asp-action="PurchaseInvoices" class="nav-link">@Localizer["Purchase Invoices"]</a>
+                                    </li>
+                                </ul>
+                              
+                            </li>
+                            <li class="nav-item " id="Users">
+                                <a asp-controller="Users" asp-action="Index" class="nav-link">
+                                    <?xml version="1.0" encoding="UTF-8" ?>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" class="svgg nav-icon-margin" viewBox="0 0 24 24" width="16.35" height="16.35"><path d="M16.043,14H7.957A4.963,4.963,0,0,0,3,18.957V24H21V18.957A4.963,4.963,0,0,0,16.043,14Z" /><circle cx="12" cy="6" r="6" /></svg>
+
+                                    <span class="nav-icon-m">@Localizer["Users"]</span>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>
+        </aside>
+
+
+
+        <!-- Shortcut section -->
+
+
+
+        <div id="content" class="d-flex flex-column col pl-0 my-auto mx-45">
+            @RenderBody()
+        </div>
+
+
+
+
+
+
+
+        <!-- End Select Existing Model -->
+        <!-- End create project Section-->
+        <!-- end shortcut section -->
+        <div id="SuccessModalShortcut">
+
+        </div>
+        <!-- Access Denied Popup-->
+
+        <div class="modal fade" id="AccessDeniedModal" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  success-modal" role="document" style="min-width: 528px;">
+                <div class="modal-content">
+                    <div class="modal-header pb-0">
+                        <img src="~/icons/alert.svg" width="100" height="100" alt="" />
+                    </div>
+                    <div class="modal-body text-center pt-0 pb-0">
+                        <h2 style="color:red">You do not have access to this resource!</h2>
+                    </div>
+                    <div class="modal-footer pt-0">
+                        <button class="btn btn-secondary mx-1" type="reset" data-toggle="modal" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    @RenderSection("MODAL", required: false)
+
+
+
+    <div id="SuccessModalContainer">
+
+    </div>
+
+
+
+    @RenderSection("Scripts", required: false)
+
+    @* Datatable scripts *@
+
+    <script>
+
+
+
+    GetLoader = function () {
+        return `<div class="loader">
+            < span ></span >
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        </div >`
+    }
+        //Global Function for adding loading to update calls
+        BeginUpdate = function () {
+            var id = $(this).attr('data-ajax-update')
+            $(id).html(`<div class="loader">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        </div>`
+                            )
+        }
+
+        //Global to restrict arabic fields to arabic only
+        $(document).on('keypress', 'input[name = TypeNameArabic],input[name = SupplierNameArabic],input[name = EmployeeNameArabic],input[name = AccountNameArabic],input[name = NameArabic],input[name = ItemNameArabic],input[name = ManufacturerNameArabic],input[name = CustomerNameArabic],input[name = ResponsibleNameArabic],input[name *=ResponsibleNameArabic]', function (event) {
+            var arabicCharUnicodeRange = /[\u0600-\u06FF]/;
+            $(this).siblings('.field-validation-valid').html('')
+            // allow arabic characters only for following fields
+            var key = event.which;
+            if (key == 8 || key == 0 || key === 32) {
+                return true;
+            }
+
+            var str = String.fromCharCode(key);
+            if (arabicCharUnicodeRange.test(str)) {
+                return true;
+            }
+            $(this).siblings('.field-validation-valid').html('Please Type in Arabic')
+            return false;
+        })
+
+        $(document).on('click', 'button[type=reset]', function () {
+
+            var t = $(this);
+            var _t = t.closest('form');
+
+            if (_t.length>0)
+            _t[0].reset();
+            var spans = $('.field-validation-valid,.field-validation-error');
+            var div = $('.validation-summary-valid');
+            spans.html(''); // clear the text
+            div.html('');
+            div.empty();
+            spans.empty(); //
+        })
+    // Script for sidebar
+    $('.drop-down').hide();
+        $(".sidebar-item").click(function () {
+
+            var parent = $(this).parent();
+            parent.find('#click-rotate').addClass("rotate-arrow-down");
+            $(".nav-item").find('.drop-down').slideUp();
+            parent.find('.drop-down').slideDown();
+
+
+    });
+        function getPosition(string, subString, index) {
+            return string.split(subString, index).join(subString).length;
+        }
+        window.onload = () => {
+        let CurrentLocation = window.location.pathname;
+
+
+        getPosition(CurrentLocation, '/', 3)
+
+        CurrentLocation =  CurrentLocation.slice(0, getPosition(CurrentLocation, '/', 3))
+        if (CurrentLocation != '/') {
+            let selector = `nav a[href="${CurrentLocation}"]`;
+            if (CurrentLocation == '/Preferences/Taxes') {
+                selector = `nav a[href^="${window.location.pathname}"]`
+            }
+            var elements = $(selector);
+            if ($(selector).parent().hasClass('.nav.flex-column')) {
+                $(selector).addClass('active');
+                return;
+            }
+            $(selector).parent().addClass('active');
+            $(selector).parent().parent().slideDown();
+        } else {
+           // $('a[href=/]').parent.addClass('active');
+        }
+    }
+    // end Script for sidebar
+    //Script for shortcut
+
+    $('#Language').on('change', function () {
+        $(this).closest('#languageForm').submit();
+    })
+    $('.redirect').click(function () {
+        var url = $(this).attr('data-url');
+        window.location.href = url;
+    })
+    //end Script for shortchut
+
+
+
+    function InitializePlusMinus() {
+        console.log("Initiazling the Plus & Minus Buttons");
+        $(document).on('click', '.minusAmount', function (e) {
+            var value = $('.targetAmountInput').val();
+            intValue = parseFloat(value);
+            $('.targetAmountInput').val(intValue - 1);
+        });
+        $(document).on('click', '.plusAmount', function (e) {
+            var value = $('.targetAmountInput').val();
+            intValue = parseFloat(value);
+            $('.targetAmountInput').val(intValue + 1)
+        });
+        }
+
+    //Global Ajax Error Handler
+    $(document).ready(function () {
+        try {
+            $(document).ajaxError(
+                function (e, request) {
+                    //Handling Global Access Denied Errors
+                    if (request.status == 403) {
+                        $('#AccessDeniedModal').modal('show');
+
+                    }
+                });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    });
+
+
+        $(document).on('click', '.toggle-password', function () {
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                $(this).find('img').attr('src', "/icons/password-icon-slash.svg");
+                input.attr("type", "text");
+            } else {
+                $(this).find('img').attr('src', "/icons/password-icon.svg");
+                input.attr("type", "password");
+            }
+        });
+        $(document).ready(function () {
+            try {
+                @*//Global Handler for Validation Dynamically Loaded HTML Content*@
+                $(document).ajaxComplete((e, request) => {
+                    if (request.status == 200) {
+
+                        var contentType = request.getResponseHeader('content-type');
+                        if (contentType == 'text/html; charset=utf-8') {
+                            $.validator.unobtrusive.parse('main');
+                        }
+                    }
+                })
+            }
+            catch (e) {
+                console.log(e);
+            }
+
+        });
+    </script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.validator.unobtrusive.parseDynamicContent = function (selector) {
+
+                //use the normal unobstrusive.parse method
+                $.validator.unobtrusive.parse(selector);
+
+                //get the relevant form
+                var form = $(selector).first().closest('form');
+
+                //get the collections of unobstrusive validators, and jquery validators
+                //and compare the two
+                var unobtrusiveValidation = form.data('unobtrusiveValidation');
+                var validator = form.validate();
+
+                $.each(unobtrusiveValidation.options.rules, function (elname, elrules) {
+                    if (validator.settings.rules[elname] == undefined) {
+                        var args = {};
+                        $.extend(args, elrules);
+                        args.messages = unobtrusiveValidation.options.messages[elname];
+                        //edit:use quoted strings for the name selector
+                        $("[name='" + elname + "']").rules("add", args);
+                    } else {
+                        $.each(elrules, function (rulename, data) {
+                            if (validator.settings.rules[elname][rulename] == undefined) {
+                                var args = {};
+                                args[rulename] = data;
+                                args.messages = unobtrusiveValidation.options.messages[elname][rulename];
+                                //edit:use quoted strings for the name selector
+                                $("[name='" + elname + "']").rules("add", args);
+                            }
+                        });
+                    }
+                });
+            }
+
+
+
+        });
+
+
+
+        switch (location.pathname.split('/')[1]) {
+
+            case "":
+                $('#dashboard').addClass('nav-active');
+
+                $('#Layer_1').addClass('nav-active');
+                break;
+            case "Sales":
+                $('#sales').addClass('nav-active');
+               /* $("#click-rotate").addClass("rotate-arrow-down");*/
+                $('#Layer_1').addClass('nav-active');
+                break;
+            case "Delivery":
+                $('#sales').addClass('nav-active');
+               /* $("#click-rotate").addClass("rotate-arrow-down");*/
+                $('#Layer_1').addClass('nav-active');
+                break;
+            case "Purchases":
+                $('#Purchases').addClass('nav-active');
+             /*   $("#click-rotate").addClass("rotate-arrow-down");*/
+                $('#Layer_1').addClass('nav-active');
+                break;
+            case "Inventory":
+                $('#Inventory').addClass('nav-active');
+              /*  $("#click-rotate").addClass("rotate-arrow-down");*/
+                $('#Layer_1').addClass('nav-active');
+                break;
+            case "Refund":
+                $('#Returnss').addClass('nav-active');
+              /*  $("#click-rotate").addClass("rotate-arrow-down");*/
+                $('#Layer_1').addClass('nav-active');
+                break;
+            case "Reports":
+                $('#Reports').addClass('nav-active');
+              /*  $("#click-rotate").addClass("rotate-arrow-down");*/
+                $('#Layer_1').addClass('nav-active');
+                break;
+
+            case "Accounts":
+                $('#Accounts').addClass('nav-active');
+               /* $("#click-rotate").addClass("rotate-arrow-down");*/
+                $('#Layer_1').addClass('nav-active');
+                break;
+            case "Employee":
+                $('#Employees').addClass('nav-active');
+              /*  $("#click-rotate").addClass("rotate-arrow-down");*/
+                $('#Layer_1').addClass('nav-active');
+                break;
+            case 'Preferences':
+            case 'Finance':
+                $('#settings').addClass("nav-active");
+             /*   $("#click-rotate").addClass("rotate-arrow-down");*/
+                $('#Layer_1').addClass('nav-active');
+                break;
+
+
+
+
+
+
+        }
+
+
+        $(document).ready(function () {
+
+
+            let searchParams = new URLSearchParams(window.location.search);
+            let tab = searchParams.get('activeTab');
+
+            if (tab && tab.length == 0) {
+                location.reload(true);
+                return;
+            }
+            if (tab != 'invoiceHistory') {
+
+                if (tab && tab.length > 0) {
+                    $('#invoiceHistory').find('.nav-link.active').toggleClass("active");
+                    $('.parent-nav').find('.nav-link.active').toggleClass("active");
+                }
+                $(`#${tab}`).find('.nav-link').toggleClass('active').attr('aria-selected', true);
+
+                const id = $(`#${tab}`).find('.nav-link').attr('href');
+                if (id) {
+                    @*explaination for id is required??*@
+                    $(`${id} ` + '.tab-pane.active.show').toggleClass('active').toggleClass('show')
+
+                    $('.tab-pane.active.show').toggleClass('active').toggleClass('show')
+
+                    $(`${id}`).addClass('active').addClass("show");
+                    const secondId = $(`${id}`).find('.nav-link.active').attr('href');
+                    if (secondId) {
+                        $("#pills-invoiceHistory").removeClass('active').removeClass('show')
+                        $(`${secondId}`).addClass('active').addClass("show");
+                    }
+
+                }
+            }
+
+
+
+            //var searchParams = new URLSearchParams(window.location.search);
+            //searchParams.set('tab', $(this).val())
+            ////to get tab value
+            //var searchParams = new URLSearchParams(window.location.search);
+            //searchParams.get('tab')
+        });
+
+        function reloadPage() {
+
+            let searchParams = new URLSearchParams(window.location.search);
+            let tab = $('.parent-nav .nav-link.active');
+
+            if (tab && tab.length == 0) {
+                console.log('inite 4')
+
+                location.reload(true);
+                return;
+            }
+
+            if (window.location.search.indexOf("activeTab") > 0) {
+                searchParams.set('activeTab', tab.parent('.nav-item').attr('id'));
+                console.log('inite 2')
+                location.reload(true)
+            }
+            console.log('inite 3')
+
+            let id = tab.parent('.nav-item').attr('id')
+            location.href = location.origin + location.pathname + "?activeTab=" + id;
+        }
+        $('.modal').on('hidden.bs.modal', function (e) {
+            let form = $(this).find('form')[0];
+            if (form) {
+                form.reset();
+                let spans = $('.field-validation-valid,.field-validation-error');
+                let div = $('.validation-summary-valid', '.validation-summary-errors');
+                spans.html(''); // clear the text
+                div.html('');
+
+                div.empty();
+                spans.empty(); //
+                $("#responsiblePersonErrorSummary").empty();
+                // $(".form-control").val('');
+            }
+        });
+
+
+
+        //notification
+
+
+        function showNotification() {
+
+            var x = document.getElementById('notificationwrapper');
+
+
+            //if (x.style.display == 'none') {
+
+
+            //    //var x.style.display = 'block';
+            //} else {
+
+            //    //var x.style.display = 'none';
+
+
+            //}
+
+        }
+        function PrintComponent(elem) {
+            var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title>' + document.title + '</title>');
+            mywindow.document.write('</head><body >');
+            mywindow.document.write(elem);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10*/
+
+            mywindow.print();
+            mywindow.close();
+
+            return true;
+        }
+
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/JsBarcode.all.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+<svg id="Plus_icon" data-name="Plus icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <g id="Ellipse_101" data-name="Ellipse 101" fill="#fff" stroke="#dedede" stroke-width="1">
+    <circle cx="11" cy="11" r="11" stroke="none"/>
+    <circle cx="11" cy="11" r="10.5" fill="none"/>
+  </g>
+  <circle id="Ellipse_102" data-name="Ellipse 102" cx="8" cy="8" r="8" transform="translate(3 3)" fill="#1dbb22"/>
+  <path id="Icon_awesome-plus" data-name="Icon awesome-plus" d="M7.537,5.439H4.928V2.83a.58.58,0,0,0-.58-.58h-.58a.58.58,0,0,0-.58.58V5.439H.58a.58.58,0,0,0-.58.58V6.6a.58.58,0,0,0,.58.58H3.189V9.787a.58.58,0,0,0,.58.58h.58a.58.58,0,0,0,.58-.58V7.178H7.537a.58.58,0,0,0,.58-.58v-.58A.58.58,0,0,0,7.537,5.439Z" transform="translate(6.691 4.441)" fill="#fff"/>
+</svg>

@@ -1,0 +1,213 @@
+﻿@model InvoiceGenerator.Models.Item
+
+@{
+    ViewData["Title"] = "Create Item";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var AREA_NAME = Microsoft.AspNetCore.Mvc.Razor.RazorViewEngine.GetNormalizedRouteValue(ViewContext, "area");
+    var CONTROLLER_NAME = this.ViewContext.RouteData.Values["controller"].ToString();
+
+
+}
+
+
+
+@section HEAD{
+    <style>
+        .col {
+            word-break: break-all;
+        }
+
+        .layout4 .svg-arrows-rep {
+            margin: auto !important
+        }
+    </style>
+}
+
+<main id="main">
+    <!-- Breadcrumb -->
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb rounded-0 bg-transparent">
+            <li class="breadcrumb-item">
+                <a href='@Url.Action("Index")'>@Localizer["Item Directory"]</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page"> @Localizer["Item Create"] </li>
+        </ol>
+    </nav>
+
+    <div class="content-box bg-white">
+        <div class=" title-bar d-flex justify-content-start mx-0 px-0">
+            <a href='@Url.Action("Index")'>
+                @*<img src="~/icons/Back.png" />*@
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-arrows-rep" width="47" viewBox="0 0 47 47">
+                    <defs>
+                        <filter id="Ellipse_23" x="0" y="0" width="47" height="47" filterUnits="userSpaceOnUse">
+                            <feOffset dy="3" input="SourceAlpha"/>
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feFlood flood-opacity="0.161"/>
+                            <feComposite operator="in" in2="blur"/>
+                            <feComposite in="SourceGraphic"/>
+                        </filter>
+                    </defs>
+                    <g id="Group_455" data-name="Group 455" transform="translate(9 35.418) rotate(-90)">
+                        <g transform="matrix(0, 1, -1, 0, 35.42, -9)" filter="url(#Ellipse_23)">
+                            <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 35) rotate(-90)" stroke-width="2">
+                                <circle cx="14.5" cy="14.5" r="14.5" stroke="none"/>
+                                <circle cx="14.5" cy="14.5" r="13.5" fill="none"/>
+                            </g>
+                        </g>
+                        <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.97) rotate(180)">
+                            <path id="Path_22" data-name="Path 22" d="M0,6.349,6.419,0,12.5,6.349" transform="translate(12.5 6.349) rotate(180)" stroke-width="2"/>
+                        </g>
+                    </g>
+                </svg>
+            </a>
+            <h3 class="text-main mx-3">@Localizer["Create Item"] </h3>
+        </div>
+
+        <!--Error messages section  -->
+        <div id="errorMessage"></div>
+        <!-- End error message -->
+        <!-- Info Block -->
+
+        <div class="card mb-4">
+            <div class="card-body pt-2 pb-2">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly"></div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="d-flex">
+                                    <label asp-for="Name"></label><span class="text-danger">*</span>
+                                </div>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="ManufacturerName"></label>
+                                <input asp-for="ManufacturerName" class="form-control" />
+                                <span asp-validation-for="ManufacturerName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="PiecesPerUnit"></label>
+                                <input asp-for="PiecesPerUnit" class="form-control" />
+                                <span asp-validation-for="PiecesPerUnit" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="ThresholdQuantity"></label>
+                                <input asp-for="ThresholdQuantity" class="form-control" />
+                                <span asp-validation-for="ThresholdQuantity" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="d-flex">
+                                    <label asp-for="StorageType"></label>
+                                </div>
+                                <input asp-for="StorageType" class="form-control" />
+                                <span asp-validation-for="StorageType" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="d-flex">
+                                    <label asp-for="StorageSction"></label>
+                                </div>
+                                <input asp-for="StorageSction" class="form-control" />
+                                <span asp-validation-for="StorageSction" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="d-flex">
+                                    <label asp-for="ShelfNumber"></label>
+                                </div>
+                                <input asp-for="ShelfNumber" class="form-control ItemShelfNumber" />
+                                <span asp-validation-for="ShelfNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="d-flex">
+                                    <label asp-for="Bin"></label>
+                                </div>
+                                <input asp-for="Bin" class="form-control" />
+                                <span asp-validation-for="Bin" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <div class="d-flex">
+                                    <label asp-for="SupplierBarCode"></label>
+                                </div>
+                                <input asp-for="SupplierBarCode" class="form-control" />
+                                <span asp-validation-for="SupplierBarCode" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+
+                                <label asp-for="RetailCostPrice"></label>
+                                <input asp-for="RetailCostPrice" type="number" class="form-control" aria-label="Cost Price"
+                                       id="costPrice">
+
+                                <span asp-validation-for="RetailCostPrice" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+
+                                <label asp-for="RetailSellPrice"></label>
+                                <input asp-for="RetailSellPrice" type="number" class="form-control" aria-label="Cost Price"
+                                       id="retailPrice">
+
+                            </div>
+                            <span asp-validation-for="RetailSellPrice" class="text-danger"></span>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+
+                                <label asp-for="IsVatInclusive"></label>
+                                <input asp-for="IsVatInclusive" class="form-control">
+                            </div>
+                            <span asp-validation-for="IsVatInclusive" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+
+                                <label asp-for="Quantity"></label>
+                                <input asp-for="Quantity" type="number" class="form-control" aria-label="Cost Price"
+                                       id="retailPrice">
+
+                            </div>
+                            <span asp-validation-for="Quantity" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-secondary mx-3" asp-action="Index">Back</a>
+                        <button class="btn btn-primary" type="submit">Create</button>
+                    </div>
+                </form>
+                </div>
+        </div>
+    </div>
+</main>
+
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -1,0 +1,8 @@
+<svg id="Minus_icon" data-name="Minus icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <g id="Ellipse_101" data-name="Ellipse 101" fill="#fff" stroke="#dedede" stroke-width="1">
+    <circle cx="11" cy="11" r="11" stroke="none"/>
+    <circle cx="11" cy="11" r="10.5" fill="none"/>
+  </g>
+  <circle id="Ellipse_102" data-name="Ellipse 102" cx="8" cy="8" r="8" transform="translate(3 3)" fill="red"/>
+  <path id="Icon_awesome-minus" data-name="Icon awesome-minus" d="M9.229,14.625H.71a.71.71,0,0,0-.71.71v.71a.71.71,0,0,0,.71.71H9.229a.71.71,0,0,0,.71-.71v-.71A.71.71,0,0,0,9.229,14.625Z" transform="translate(5.781 -4.689)" fill="#fff"/>
+</svg>

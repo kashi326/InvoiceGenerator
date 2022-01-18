@@ -1,0 +1,112 @@
+﻿@model IEnumerable<InvoiceGenerator.Models.SaleInvoice>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@{
+    ViewData["Title"] = "Sale Invoices";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var AREA_NAME = Microsoft.AspNetCore.Mvc.Razor.RazorViewEngine.GetNormalizedRouteValue(ViewContext, "area");
+    var CONTROLLER_NAME = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+
+@section HEAD{
+    <style>
+        th, td {
+            text-align: left !important;
+        }
+    </style>
+}
+
+<main id="main">
+    <!-- Breadcrumb -->
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb rounded-0 bg-transparent">
+            <li class="breadcrumb-item active" aria-current="page">@Localizer["Sale Invoice"]</li>
+        </ol>
+    </nav>
+
+
+    <div class="content-box bg-white card">
+        <div class="title-bar d-flex justify-content-start">
+            <h3 class="text-main">@Localizer["Sale Invoices"]</h3>
+        </div>
+
+
+        <div class="customer-block">
+            <div class="tools-bar">
+                <div class="row align-items-start">
+                    <div class="col-12 d-flex justify-content-start">
+                        <h5 class="text-muted text-dark d-flex justify-content-between">
+                            <p>@Localizer["Total Invoices"]:</p> <span id="totalCustomer" class="text-dark">&nbsp; <b>@Model.Count()</b></span>
+                        </h5>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-12 col-sm-3">
+                        <div class="form-group m-0" id="search-by-group">
+                            <input id="search-by" type="text" class="form-control search-bar-ltr" name="search-by" value="" placeholder="@Localizer["Search"].....">
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-9 d-flex justify-content-end">
+                        <a class="btn btn-primary text-light" asp-area="SaleInvoices" asp-action="Create">
+                            @Localizer["Create Sale Invoice"] <span style="font-weight: bolder;">+</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="invoiceTable" class=" dataTable display table table-bordered table-striped" style="width: 100%">
+                <thead class="bg-submain text-light">
+                    <th>@Html.DisplayNameFor(model => model.InvoiceID)</th>
+                    <th>@Html.DisplayNameFor(model => model.IssuedDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.CustomerName)</th>
+                    <th>@Html.DisplayNameFor(model => model.GrossTotal)</th>
+                    <th>@Html.DisplayNameFor(model => model.TotalVAT)</th>
+                    <th>@Localizer["Items"]</th>
+                </thead>
+                <tbody>
+                    @foreach(var invoice in Model)
+            {
+                    <tr>
+                        <td><a class="text-main action-link-bold" href='@Url.Action("Details")/@invoice.InvoiceID'>SINV - @invoice.InvoiceID</a></td>
+                        <td>@invoice.IssuedDate.ToShortDateString()</td>
+                        <td>@invoice.CustomerName</td>
+                        <td>@invoice.GrossTotal</td>
+                        <td>@invoice.TotalVAT</td>
+                        <td>@invoice.SaleInvoiceDetails.Count</td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+        </div>
+        <div id="paging" class="paging"></div>
+    </div>
+
+</main>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            let next = '<svg xmlns="http://www.w3.org/2000/svg" class="pagination-links svg-arrows-dbl" xmlns:xlink="http://www.w3.org/1999/xlink" width="47" height="48" viewBox="0 0 47 48"> < defs > <filter id="Ellipse_23" x="0" y="0" width="47" height="48" filterUnits="userSpaceOnUse"><feOffset dy="3" input="SourceAlpha" /> <feGaussianBlur stdDeviation="3" result="blur" />        <feFlood flood-opacity="0.161" />                <feComposite operator="in" in2="blur" />              <feComposite in="SourceGraphic" />              </filter>  </defs >             <g id="Group_458" data-name="Group 458" transform="translate(8.697 35.768) rotate(-90)">  <g transform="matrix(0, 1, -1, 0, 35.77, -8.7)" filter="url(#Ellipse_23)">                    <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 36) rotate(-90)"  stroke-width="2">                          <ellipse cx="15" cy="14.5" rx="15" ry="14.5"  />                            <ellipse cx="15" cy="14.5" rx="14" ry="13.5"  />                       </g>                    </g>                    <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.681) rotate(180)">                       <path id="Path_22" data-name="Path 22" d="M0,0,6.419,6.349,12.5,0" transform="translate(12.5 6.349) rotate(180)"   stroke-width="2" />                   </g>                </g></svg >';
+            let previous = '<svg xmlns="http://www.w3.org/2000/svg" class="pagination-links svg-arrows-dbl" xmlns:xlink="http://www.w3.org/1999/xlink" width="47" height="48" viewBox="0 0 47 47"> < defs >  <filter id="Ellipse_23" x="0" y="0" width="47" height="48" filterUnits="userSpaceOnUse"><feOffset dy="3" input="SourceAlpha" />  <feGaussianBlur stdDeviation="3" result="blur" />     <feFlood flood-opacity="0.161" />                    <feComposite operator="in" in2="blur" />                    <feComposite in="SourceGraphic" />                </filter>  </defs >               <g id="Group_455" data-name="Group 455" transform="translate(9 35.418) rotate(-90)">  <g transform="matrix(0, 1, -1, 0, 35.42, -9)" filter="url(#Ellipse_23)">        <g id="Ellipse_23-2" data-name="Ellipse 23" transform="translate(9 35) rotate(-90)"   stroke-width="2">                            <circle cx="14.5" cy="14.5" r="14.5" />                            <circle cx="14.5" cy="14.5" r="13.5"  />                        </g>                    </g>                    <g id="Group_124" data-name="Group 124" transform="translate(20.829 17.97) rotate(180)">                        <path id="Path_22" data-name="Path 22" d="M0,6.349,6.419,0,12.5,6.349" transform="translate(12.5 6.349) rotate(180)"  stroke-width="2" />                    </g>                </g></svg >';
+            let invoiceTable = $("#invoiceTable").DataTable({
+                filter: true,
+                info: "@Localizer["Showing _START_ to _END_ of _TOTAL_ entries"]",
+                sDom:"tipr",
+                language: {
+                    paginate: {
+                        next: next, // or '→'
+                        previous: previous, // or '←'
+                    },
+                    processing: GetLoader()
+                },
+            });
+            $('#search-by').on('keyup', function () {
+                invoiceTable.search(this.value).draw();
+            });
+        });
+    </script>
+
+
+}
